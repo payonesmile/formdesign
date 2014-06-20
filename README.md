@@ -5,4 +5,4 @@
 
 官网：http://formdesign.leipi.org
 
-近期上线，敬请关注！
+详情，请到官网了解。
