@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <script type="text/javascript" src="../internal.js"></script>
+        <script type="text/javascript" src="../../../jquery.js"></script>
+        <script type="text/javascript" src="../../../bootstrap/bootstrap.js"></script>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            a {text-decoration: none;}
+            .sqlopt a {
+                color: #005580;
+                text-decoration: none;
+            }
+            .sqlopt a:hover {
+                text-decoration: underline;
+            }
+            html,body {font-size: 12px;}
+            body {
+                padding-left: 20px;padding-right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="tblwrap" style="padding-top:10px;">
+            <table class="table table-striped table-bordered" style="margin-top:18px;margin-bottom: 0;">
+                <thead>
+                    <tr>
+                        <th> <span> 控件名称 ：</span><span class="label label-important">*</span> </th>
+                        <th> <span> 类型 ：</span></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="itemName" type="text" placeholder="必填项" style="width:203px;"/>
+                        </td>
+                        <td>
+                            <select onchange="javascript:fnTypeChange(this.value);" style="width:209px;" id="itemType">
+                                <optgroup label="----单行输入框----">
+                                    <option value="sys_date">当前日期，形如 1999-01-01</option>
+                                    <option value="sys_date_cn">当前日期，形如 2009年1月1日</option>
+                                    <option value="sys_date_cn_short3">当前日期，形如 2009年</option>
+                                    <option value="sys_date_cn_short4">当前年份，形如 2009</option>
+                                    <option value="sys_date_cn_short1">当前日期，形如 2009年1月</option>
+                                    <option value="sys_date_cn_short2">当前日期，形如 1月1日</option>
+                                    <option value="sys_time">当前时间</option>
+                                    <option value="sys_date">当前日期 [日历控件]</option>
+                                    <option value="sys_datetime">当前日期+时间 [日历控件]</option>
+                                    <option value="sys_week">当前星期中的第几天，形如 星期一</option>
+                                    <option value="sys_userid">当前用户id</option>
+                                    <option value="sys_realname">当前用户姓名</option>
+                                    <option value="sys_deptname">当前用户部门</option>
+                                    <!--option value="sys_realname_date">当前用户姓名+日期</option>
+                                    <option value="sys_realname_datetime">当前用户姓名+日期+时间</option>
+                                    <option value="sys_formname">表单名称</option>
+                                    <option value="sys_runname">工作名称/文号</option>
+                                    <option value="sys_rundate">流程开始日期</option>
+                                    <option value="sys_rundatetime">流程开始日期+时间</option>
+                                    <option value="sys_runid">流水号</option>
+                                    <option value="sys_autonum">文号计数器</option>
+                                    <option value="sys_ip">经办人ip地址</option>
+                                    <option value="sys_manager1">部门主管(本部门)</option>
+                                    <option value="sys_manager2">部门主管(上级部门)</option>
+                                    <option value="sys_manager3">部门主管(一级部门)</option-->
+                                    <!--option value="sys_sql">来自sql查询语句</option-->
+                                </optgroup>
+                                <!--optgroup label="----下拉菜单----">
+                                    <option value="sys_list_dept">部门列表</option>
+                                    <option value="sys_list_user">人员列表</option>
+                                    <option value="sys_list_pos">角色列表</option>
+                                    <option value="sys_list_prcsuser1">流程设置所有经办人列表</option>
+                                    <option value="sys_list_prcsuser2">本步骤设置经办人列表</option>
+                                    <option value="sys_list_manager1">部门主管(本部门)</option>
+                                    <option value="sys_list_manager2">部门主管(上级部门)</option>
+                                    <option value="sys_list_manager3">部门主管(一级部门)</option>
+                                    
+                                </optgroup-->
+                            </select>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id='itemAttr'>
+                    <tr>
+                        <th> <span> 控件样式 ：</span> </th>
+                        <th> <span> 可见性 ：</span> </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="controls">
+                                <div class="input-prepend input-append">
+                                    <span class="add-on">字体大小</span><input style="display:inline;width: 32px;" class="span2" id="itemSize" size="1" type="text"><span class="add-on">px</span>
+                                    <span class="add-on">宽</span><input style="display:inline;width: 32px;" class="span2" id="itemWidth" size="1" type="text"><span class="add-on">px</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <label> <input id="hidden" type="checkbox"> 隐藏 </label>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="itemSql" style="display:none;">
+                    <tr> <th colspan="2"> SQL查询语句 ('号用`号替换) <span class="sqlopt" style="float:right"><a class="btn" title="SQL书写指导" onclick="fnShowGuide();" href="javascript:;"><i class="icon-question-sign"></i></a>  <a class="btn" title="测试SQL语句" onclick="fnCheckSql(true);" href="javascript:;"><i class="icon-play"></i></a></span></th> </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea style="width:440px;height: 45px;" id="txtSql" title="如宏控件类型选择来自SQL查询语句，则填写"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><!-- end tblwrap-->
+        <div style="display:none;margin-bottom: 27px;">
+            <div class="page-header">
+                <h3>SQL书写指导<span style="position: fixed;right: 20px;"><a href="javascript:;" title="回到控件属性页" onclick="fnShowGuide();" class="btn"><i class="icon-home"></i></a></span></h3>
+            </div>
+            <!--div>
+                <div class="alert alert-error">
+                    <a class="close" data-dismiss="alert">×</a>
+                    <strong>注意！</strong> SQL语句中的单引号请用符号`替换（该符号在键盘TAB上方）。
+                </div>
+                <blockquote>
+                    <p>宏控件可以代替手工输入，实现根据用户指定要求进行自动取值，使得工作流的表单填写更加智能与方便，宏控件类型选择当前日期，点击【确定】，在表单上
+					就生成了该控件，填写表单时就会自动填入当前日期了。另外宏控件也支持隐藏属性，对不需要在表单显示字段可以将其隐藏。宏控件支持来自SQL查询，语句，下面重点介绍一下。 </p>
+                </blockquote>
+                <p>来自SQL语句的宏控件，因其定义格式比较复杂，需要具备SQL语言的专业知识，并了解OA系统数据库结构，建议在技术支持人员指导下完成。</p><br/>
+                <p>可以参照以下格式书写SQL语句：</p><br/>
+                <strong>下拉菜单型语句如：</strong><br/><br/>
+                <p>
+                    <code>SELECT name FROM book_category ORDER BY sort</code><br/><br/>
+					该语句表示列出全部书籍的分类名，并按序号排序显示
+                </p>
+                <br/>
+                <p>
+                    <strong>单行输入框语句如：</strong><br/><br/>
+                    <code>SELECT realname FROM common_member WHERE username = `gzzr`</code><br/><br/>
+					该语句表示查询用户名为gzzr的用户的真实姓名<br/><br/>
+                </p>
+                <strong>目前，SQL语句中已支持以下宏变量，更加方便用户使用：</strong><br/><br/>
+                <code>[sys_user_id]</code> 表示当前用户的用户ID<br/><br/>
+                <code>[sys_dept_id]</code> 表示当前用户的部门ID<br/><br/>
+                <code>[sys_pos_id]</code> 表示当前用户角色ID<br/><br/>
+                <code>[sys_run_id]</code> 表示当前的工作流水号，可用于表单数据表的查询<br/><br/>
+                <p>
+					例如：<br/><br/>
+                    <code>SELECT realname FROM common_member WHERE uid=`[sys_user_id]`</code><br/><br/>
+					此句表示查询当前用户的真实姓名
+                </p>
+                <br/>
+                <p>
+                    <code>SELECT realname FROM common_member WHERE FIND_IN_SET(deptid,`[sys_dept_id]`)</code><br/><br/>
+					此句表示查询当前部门所有用户的姓名
+                </p>
+                <br/>
+                <p>
+                    <code>SELECT realname FROM common_membe WHERE deptid = `[sys_dept_id]` ORDER BY uid</code><br/><br/>
+					此句表示查询当前部门所有用户的姓名，并按角色序号排序
+                </p>
+                <p>可以利用SQL语句查询系统代码设置中所设置的代码，实现下拉菜单根据代码定义动态变化：</p><br/><br/>
+				例如：<br/><br/>
+                <code>SELECT name FROM common_syscode WHERE number = `AREA` ORDER BY sort</code><br/><br/>
+                <p>此句表示列出系统代码“地区”的全部值，“地区”的代码编号是“AREA”。</p>
+            </div-->
+        </div>
+        <script type="text/javascript">
+            var oNode = null;
+            window.onload = function() {
+                //如果是编辑控件
+                if( UE.plugins['auto'].editdom ) {
+                    oNode = UE.plugins['auto'].editdom;
+                    if( oNode.tagName == 'INPUT' ) {
+                        if(oNode.getAttribute('hide')=='1'){
+                            $G('hidden').checked = true;
+                        }
+                    }
+                    $G('itemName').value	= oNode.getAttribute('title');
+                    $G('itemType').value	= oNode.getAttribute('datafld');
+                    $G('txtSql').value	= oNode.getAttribute('datasrc');
+                    var sSizeFull = oNode.style.width;
+                    $G('itemWidth').value = sSizeFull.substr(0, sSizeFull.length - 2);//这里的substr是为了去掉末尾的'px'
+                    var sFontSize = oNode.style.fontSize;
+                    $G('itemSize').value = sFontSize.substr(0, sFontSize.length - 2);//这里的substr是为了去掉末尾的'px'
+                }
+                fnTypeChange( $G('itemType').value );
+            }
+			
+            function fnShowGuide(){
+                $('#tblwrap').slideToggle().siblings().slideToggle();
+            }
+            function fnTypeChange( sV ){
+                var aAllowItem = ['sys_list_dept','sys_list_user','sys_list_pos',
+                    'sys_list_prcsuser1','sys_list_prcsuser2','sys_list_manager1',
+                    'sys_list_manager2','sys_list_manager3','sys_list_sql'];
+                if( sV == "sys_sql" || sV =="sys_list_sql" ){
+                    $('#itemSql').show().siblings('tbody').hide();
+                } else {
+                    $('#itemSql').hide().siblings('tbody').show();
+                }
+                if($.inArray(sV,aAllowItem) == -1) {
+                    $('#hidden').removeAttr('disabled').parent().css('cursor', 'default');
+                } else {
+                    $G('hidden').checked = false;
+                    $('#hidden').attr('disabled','disabled').parent().css('cursor', 'not-allowed');
+                }
+            }
+            function fnCheckSql ( bCheckFlag ) {
+                //检测单引号和回车
+                var sExpr1 = /\n/g;
+                var sExpr2 = /'/g;
+                var sSql = $G("txtSql").value;
+                if( sSql.match(sExpr1) || sSql.match(sExpr2) ) {
+                    var sMsg = "您的sql语句中存在单引号和回车，不符合要求，是否进行替换？";
+                    if( window.confirm(sMsg) ) {
+                        sSql = sSql.replace( sExpr1,"" );
+                        sSql = sSql.replace( sExpr2,"`" );
+                        $G("txtSql").innerHTML = sSql;
+                    } else {
+                        return (false);
+                    }
+                }
+                if( bCheckFlag ) {
+                    var oDate = new Date();
+                    var sUrl = parent.getItemUrl + '&sql=' + sSql;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            try {
+                                alert(xhr.responseText);
+                            } catch ( e ) {
+                                alert ( ' 测试SQL正确性时遇到问题，请联系OA管理员处理 ');
+                                return false;
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                }
+                return (true);
+            }
+            dialog.oncancel = function () {
+                if( UE.plugins['auto'].editdom ) {
+                    delete UE.plugins['auto'].editdom;
+                }
+            };
+            dialog.onok = function (){
+                if ( $G('itemName').value == '' ) {
+                    alert('控件名称不能为空');
+                    $G('itemName').focus();
+                    return false;
+                } else if ( $G('itemType').value == 'sys_sql' || $G('itemType').value=='sys_list_sql' ) {
+                    if ( $G('txtSql').value == '' ) {
+                        alert('SQL查询语句不能为空');
+                        return false;
+                    } else if ( !fnCheckSql( false )) {
+                        return false;
+                    }
+                }
+                if( !oNode ) {
+                    var sUrl = parent.getItemUrl;
+                    var nItemId = null;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            try {
+                                nItemId = xhr.responseText;
+                                if ( $G('itemType').value.indexOf('sys_list') < 0 ) {
+                                    oNode = document.createElement("input");
+                                    oNode.setAttribute('type','text');
+                                    oNode.setAttribute('value','{macro}');
+                                } else {
+                                    oNode = document.createElement("select");
+                                    var objOption = new Option('{macro}', '');
+                                    oNode.options[oNode.options.length] = objOption;
+                                }
+                                oNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;") );
+                                oNode.setAttribute('name','data_'+ nItemId );
+                                oNode.setAttribute('class','auto' );
+                                oNode.setAttribute('className','auto');
+                                oNode.setAttribute('datafld',$G('itemType').value );
+                                oNode.setAttribute('datasrc',$G('txtSql').value );
+                                if( $G('hidden').checked ) {
+                                    oNode.setAttribute('hide', '1' ) ;
+                                } else {
+                                    oNode.setAttribute('hide', '0' ) ;
+                                }
+                                if( $G('itemSize').value != '' ) {
+                                    oNode.style.fontSize = $G('itemSize').value + 'px';
+                                }
+                                if( $G('itemWidth').value!="" ) {
+                                    oNode.style.width = $G('itemWidth').value + 'px';
+                                }
+                                editor.execCommand('insertHtml',oNode.outerHTML);
+                                return true;
+                            } catch ( e ) {
+                                alert ( '插入控件出错，请联系OA管理员解决 ');
+                                return false;
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                } else {
+                    var nItemId = oNode.getAttribute('name').substr(5);
+                    var oNewNode = null;
+                    domUtils.remove(oNode,false);  //删除当前控件，再创建一个新的
+                    if ( $G('itemType').value.indexOf('sys_list') < 0 ) {
+                        oNewNode = document.createElement("input");
+                        oNewNode.setAttribute('type','text');
+                        oNewNode.setAttribute('value','{macro}');
+                    } else {
+                        oNewNode = document.createElement("select");
+                        var objOption = new Option('{macro}', '');
+                        oNewNode.options[oNewNode.options.length] = objOption;
+                    }
+                    oNewNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;") );
+                    oNewNode.setAttribute('name','data_'+ nItemId );
+                    oNewNode.setAttribute('class','auto' );
+                    oNewNode.setAttribute('className','auto');
+                    oNewNode.setAttribute('datafld',$G('itemType').value );
+                    oNewNode.setAttribute('datasrc',$G('txtSql').value );
+                    if( $G('hidden').checked ) {
+                        oNewNode.setAttribute('hide', '1' ) ;
+                    } else {
+                        oNewNode.setAttribute('hide', '0' ) ;
+                    }
+                    if( $G('itemSize').value != '' ) {
+                        oNewNode.style.fontSize = $G('itemSize').value + 'px';
+                    }
+                    if( $G('itemWidth').value!="" ) {
+                        oNewNode.style.width = $G('itemWidth').value + 'px';
+                    }
+                    editor.execCommand('insertHtml',oNewNode.outerHTML);
+                    delete UE.plugins['auto'].editdom; //使用后清空这个对象，变回新增模式
+                }
+            };
+        </script>
+    </body>
+</html>

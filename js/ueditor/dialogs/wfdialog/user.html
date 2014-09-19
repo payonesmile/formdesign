@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>部门人员控件属性</title>
+        <script type="text/javascript" src="../internal.js"></script>
+        <script type="text/javascript" src="../../../jquery.js"></script>
+        <script type="text/javascript" src="../../../bootstrap/bootstrap.js"></script>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            html,body {font-size: 12px;}
+            body {
+                padding-left: 20px;padding-right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="table table-striped table-bordered" style="margin-top:18px;margin-bottom: 0;">
+            <tr>
+                <th><span>选择类型</span><span class="label label-important">*</span></th>
+                <th><span>控件名称</span><span class="label label-important">*</span></th>
+                <th><span>控件样式</span></th>
+            </tr>
+            <tr>
+               
+                <td>
+                    <select id="selectType">
+                        <option value="0" selected>选择用户</option>
+                        <option value="1">选择部门</option>
+                        <option value="2">选择角色</option>
+                        <option value="3">选择平台</option>
+                    </select>
+                    <label><input type="checkbox" id="issingle" />单选</label>
+                </td>
+                 <td>
+                    <input id="itemName" placeholder="必填项" type="text" size="10" /><br/>
+                </td>
+                <td>
+                    <div class="input-prepend input-append">
+                        <span class="add-on">宽</span><input class="span2" value="150" style="display:inline;width: 32px;" id="txtWidth" type="text"><span class="add-on">px</span>
+                        <span class="add-on">高</span><input class="span2" value="20" style="display:inline;width: 32px;" id="txtHeight" type="text"><span class="add-on">px</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            var oNode = null;
+            window.onload = function() {
+                //弹出窗口初始化函数，这里主要是判断是编辑下拉列表还是新增
+                if( UE.plugins['user'].editdom ){
+                    oNode = UE.plugins['user'].editdom;
+                    $G('itemName').value = oNode.getAttribute('title');
+                    $G('selectType').value = oNode.getAttribute('selecttype');
+                    if(oNode.getAttribute('single')=='1'){
+                        $G('issingle').checked = true;
+                    }
+                    var sWidth = oNode.style.width;
+                    $G('txtWidth').value = sWidth.substr(0, sWidth.length - 2);//这里的substr是为了去掉末尾的'px'
+                    var sHeight = oNode.style.height;
+                    $G('txtHeight').value = sHeight.substr(0, sHeight.length - 2);
+                }
+            }
+            dialog.oncancel = function () {
+                if( UE.plugins['user'].editdom ) {
+                    delete UE.plugins['user'].editdom;
+                }
+            };
+            dialog.onok = function (){
+                if( $G('itemName').value == '') {
+                    alert('控件名称不能为空');
+                    $G('itemName').focus();
+                    return false;
+                }
+                if( !oNode ) {
+                    var sUrl =  parent.getItemUrl;
+                    var nItemId = null;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            try {
+                                nItemId = xhr.responseText;
+                                oNode = document.createElement('input');
+                                oNode.setAttribute('name','data_' + nItemId);
+                                oNode.setAttribute('class','user');
+                                oNode.setAttribute('className','user');
+                                oNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;"));
+                                oNode.setAttribute('selecttype',$G('selectType').value);
+                                if( $G('txtWidth').value!=''){
+                                    oNode.style.width = $G('txtWidth').value + 'px';
+                                    oNode.setAttribute('user_width',$G('txtWidth').value);
+                                } else {
+                                    oNode.style.width = '148px';
+                                    oNode.setAttribute('user_width','148');
+                                }
+                                if( $G('txtHeight').value!=''){
+                                    oNode.style.height = $G('txtHeight').value + 'px';
+                                    oNode.setAttribute('user_height',$G('txtHeight').value);
+                                } else {
+                                    oNode.style.height = '25px';
+                                    oNode.setAttribute('user_height','25');
+                                }
+                                if($G('issingle').checked==true){
+                                    oNode.setAttribute('single','1');
+                                } else {
+                                    oNode.setAttribute('single','0');
+                                }
+                                editor.execCommand('insertHtml',oNode.outerHTML);
+                                return true;
+                            } catch (e) {
+                                alert ( '插入控件出错，请联系OA管理员解决 ');
+                                return false;
+                            }
+                        },
+                        error:function () {
+                            alert('Request TimeOut');
+                            return false;
+                        }
+                    })
+                } else {
+                    if( $G('txtWidth').value!=''){
+                        oNode.style.width = $G('txtWidth').value + 'px';
+                        oNode.setAttribute('user_width',$G('txtWidth').value);
+                    } else {
+                        oNode.style.width = '148px';
+                        oNode.setAttribute('user_width','148');
+                    }
+                    if( $G('txtHeight').value!=''){
+                        oNode.style.height = $G('txtHeight').value + 'px';
+                        oNode.setAttribute('user_height',$G('txtHeight').value);
+                    } else {
+                        oNode.style.height = '25px';
+                        oNode.setAttribute('user_height','25');
+                    }
+                    if($G('issingle').checked==true){
+                        oNode.setAttribute('single','1');
+                    } else {
+                        oNode.setAttribute('single','0');
+                    }
+                    oNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;"));
+                    oNode.setAttribute('selecttype',$G('selectType').value);
+                    delete UE.plugins['user'].editdom; //使用后清空这个对象，变回新增模式
+                }
+            };
+        </script>
+    </body>
+</html>

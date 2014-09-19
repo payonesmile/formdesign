@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <script type="text/javascript" src="../internal.js"></script>
+        <script type="text/javascript" src="../../../jquery.js"></script>
+        <script type="text/javascript" src="../../../bootstrap/bootstrap.js"></script>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            a {text-decoration: none;}
+            html,body {font-size: 12px;}
+            body {
+                padding-left: 20px;padding-right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="tblwrap">
+            <table class="table table-bordered table-striped" style="margin-top:18px;margin-bottom: 0;">
+                <tbody>
+                    <tr>
+                        <th> <span> 控件名称 </span><span class="label label-important">*</span></th>
+                        <th> <span> 数据来源 </span> </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="itemName" placeholder="必填项" type="text" size="20" />
+                        </td>
+                        <td>
+                            <select onchange="javascript:fnGetData(this.value);" style="width:115px;" id="datasrc">
+                                <option value="">选择数据来源</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3"> <span> 添加映射关系 </span> </th>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div id="hidden" style="display:none;">
+                                <select id="datafield">
+                                </select> <i class="icon-arrow-right"></i>
+                                <input type="text" size="20" placeholder="映射控件名称" id="itemTitle" />  &nbsp;
+                                <a href="javascript:;" onclick="fnAdd();" class="btn btn-large"><i class="icon-plus"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="tbhidden" style="display:none;">
+                    <tr>
+                        <td>@a</td>
+                        <td>@b</td>
+                        <td>@c</td>
+                        <td><a href="javascript:;" onclick="fnDel(this);" class="btn"><i class="icon-remove"></i></a></td>
+                    </tr>
+                </tbody>
+            </table><br/>
+            <table class="table table-striped table-bordered table-condensed" style="margin-bottom:0;" id="tbl">
+                <thead>
+                    <tr>
+                        <th> <span>数据库字段</span> </th>
+                        <th> <span>字段名称</span> </th>
+                        <th> <span>映射控件名称</span> </th>
+                        <th> <span>操作</span> </th>
+                    </tr>
+                </thead>
+                <tbody id="tbl1">
+
+                </tbody>
+            </table>
+
+        </div><!-- end tblwrap-->
+        <script type="text/javascript">
+            var oNode = null;
+            //-- 获取控件属性 --
+            var bEditFlag = 0;
+            var gDataSrc = "";
+            window.onload = function() {
+                //如果是编辑控件
+                if( UE.plugins['data_fetch'].editdom ) {
+                    oNode = UE.plugins['data_fetch'].editdom;
+                    bEditFlag = 1;
+                    $G('itemName').value = oNode.getAttribute('title');
+                    var sDataSrc = oNode.getAttribute('data_table');
+                    fnGetData( sDataSrc );
+                    gDataSrc = sDataSrc;
+                    var sDataField = oNode.getAttribute("data_field"),
+                    sDataFieldName = oNode.getAttribute("data_fld_name"),
+                    sDataControl = oNode.getAttribute("data_control");
+                    var aDataField = sDataField.split("`"),
+                    aDataFieldName = sDataFieldName.split("`"),
+                    aDataControl = sDataControl.split("`");
+					
+                    var sNode = '<tr>' + $G('tbhidden').rows[0].innerHTML + '</tr>'; //复制节点
+                    for ( var i = 0; i < aDataField.length - 1; i++ ) {
+                        var sTempNode = sNode;
+                        var sTempNodeReplace = sTempNode.replace(/\@a/g,aDataField[i]);
+                        sTempNodeReplace = sTempNodeReplace.replace(/\@b/g,aDataFieldName[i]);
+                        sTempNodeReplace = sTempNodeReplace.replace(/\@c/g,aDataControl[i]);
+                        $('#tbl1').append(sTempNodeReplace);
+                    }
+                    fnInitDataSrc(sDataSrc);
+                } else {
+                    fnInitDataSrc();
+                }
+                $G('itemName').focus();
+            }
+            /**
+             *	初始化数据来源
+             */
+            function fnInitDataSrc(sVal){
+                var sUrl = 'wf.php?mod=workflowsetup&do=formdesignaction&act=getconfig&op=fetch';
+                ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                        if( xhr!='' ) {
+                            var oJson = jQuery.parseJSON(xhr.responseText);
+                            var html = '';
+                            $.each(oJson,function(i,j){
+                                html += '<option value = "' + i + '">';
+                                html += j.workname + '</option>';
+                            })
+                            $('#datasrc').append(html);
+                            if(sVal){
+                                $G('datasrc').value = sVal;
+                            }
+                        }
+                    },onerror:function() {
+                        alert('Request DataSrc TimeOut');
+                    }});
+            }
+            //获取选定数据来源的option，更新到表格内所有的下拉列表
+            function fnGetData ( sVal ) {
+                if( sVal!='' ) {
+                    var sUrl = 'wf.php?mod=workflowsetup&do=formdesignaction&act=getdata&op=fetch&datasrc=' + sVal;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            if( xhr!='' ) {
+                                var sOption = '<option value="">请选择表单字段</option>';
+                                $('#datafield').html(sOption + xhr.responseText );
+                                $('#hidden').show();
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                } else {
+                    $('#datafield').html('');
+                    $('#hidden').hide();
+                }
+            }
+            function fnAdd(){
+                var sDataSrc = $G('datasrc').value;
+                var field = $G('datafield').value;
+                if( gDataSrc != sDataSrc && gDataSrc!="") {
+                    var sMsg = "数据来源只能选择一种，变更数据来源，您之前的映射项将被清除，是否继续？";
+                    if( !window.confirm( sMsg ) ) {
+                        return false;
+                    } else {
+                        $('#tbl1').empty();
+                    }
+                }
+                if( field == "" ) {
+                    alert("请选择表单字段");
+                    return;
+                }
+                if( $G('itemTitle').value == '' ) {
+                    alert("请填写映射控件名称");
+                    return;
+                }
+                for( var i = 1;i < $G('tbl').rows.length;i++ ) {
+                    var sDataField = $G('tbl').rows[i].cells[0].innerHTML;
+                    if( sDataField == field ) {
+                        alert("已经添加！");
+                        return false;
+                    }
+                }
+                //add a row
+                var sNode = '<tr>' + $G('tbhidden').rows[0].innerHTML + '</tr>'; //复制节点
+                sNode = sNode.replace(/\@a/g,field);
+                sNode = sNode.replace(/\@b/g,$G('datafield').options[$G('datafield').selectedIndex].text);
+                sNode = sNode.replace(/\@c/g,$G('itemTitle').value);
+                $('#tbl1').append(sNode);
+            }
+            function fnDel(obj){
+                $(obj).parent().parent().remove();
+            }
+            dialog.oncancel = function () {
+                if( UE.plugins['data_fetch'].editdom ) {
+                    delete UE.plugins['data_fetch'].editdom;
+                }
+            };
+            dialog.onok = function (){
+                if ( $G('itemName').value == '' ) {
+                    alert('控件名称不能为空');
+                    $G('itemName').focus();
+                    return false;
+                }
+                var sDataSrc = $G('datasrc').value;
+                var sDataField = '',sDataFieldName = '',sDataControl = '';
+                //遍历数据项
+                for( var i = 0;i < $G('tbl1').rows.length;i++ ) {
+                    var row = $G('tbl1').rows[i];
+                    sDataField += row.cells[0].innerHTML + "`" ;
+                    sDataFieldName += row.cells[1].innerHTML + "`" ;
+                    sDataControl += row.cells[2].innerHTML + "`" ;
+                }
+				
+                var sHtml = '<button title="' + $G('itemName').value +
+                    '" class="fetch" data_table="' + sDataSrc + '" data_field="' +
+                    sDataField + '" data_fld_name="' + sDataFieldName +
+                    '" data_control="' + sDataControl + '">' + $G('itemName').value + '</button>';
+                if( bEditFlag == 1 ) {
+                    domUtils.remove(oNode,false);
+                    delete UE.plugins['data_fetch'].editdom; //使用后清空这个对象，变回新增模式
+                }
+                editor.execCommand('insertHtml',sHtml);
+            };
+        </script>
+    </body>
+</html>

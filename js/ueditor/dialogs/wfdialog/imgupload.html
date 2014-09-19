@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>图片上传控件</title>
+        <script type="text/javascript" src="../internal.js"></script>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            html,body {font-size: 12px;}
+            body {
+                padding-left: 20px;padding-right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="table table-striped table-bordered" style="margin-top:18px;margin-bottom: 0;">
+            <tr>
+                <th><span>控件名称</span><span class="label label-important">*</span></th>
+                <th><span>图片属性</span></th>
+            </tr>
+            <tr>
+                <td> 
+                    <input id="itemName" placeholder="必填项" type="text" size="10" />
+                </td>
+                <td> 宽度 <input id="imgSize" size="1" type="text"> px &nbsp;高度 <input id="imgHeight" size="1" type="text"> px</td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            var oNode = null;
+            window.onload = function() {
+                //弹出窗口初始化函数，这里主要是判断是编辑下拉列表还是新增
+                if( UE.plugins['imgupload'].editdom ){
+                    oNode = UE.plugins['imgupload'].editdom;
+                    $G('itemName').value = oNode.getAttribute('title');
+                    var sImgSize = oNode.style.width;
+                    $G('imgSize').value = sImgSize.substr(0, sImgSize.length - 2);//这里的substr是为了去掉末尾的'px'
+                    var sImgHeight = oNode.style.height;
+                    $G('imgHeight').value = sImgHeight.substr(0, sImgHeight.length - 2);
+                }
+            }
+            dialog.oncancel = function () {
+                if( UE.plugins['imgupload'].editdom ) {
+                    delete UE.plugins['imgupload'].editdom;
+                }
+            };
+            dialog.onok = function (){
+                if( $G('itemName').value == '') {
+                    alert('控件名称不能为空');
+                    $G('itemName').focus();
+                    return false;
+                }
+                if( !oNode ) {
+                    var sUrl =  parent.getItemUrl;
+                    var nItemId = null;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            try {
+                                nItemId = xhr.responseText;
+                                oNode = document.createElement("img");
+                                oNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;"));
+                                oNode.setAttribute('name','data_' + nItemId);
+                                if( $G('imgSize').value !="" ){
+                                    oNode.style.width = $G('imgSize').value + 'px';
+                                }
+                                if( $G('imgHeight').value != "" ) {
+                                    oNode.style.height = $G('imgHeight').value + 'px';
+                                }
+                                var sImgWidth = $G('imgSize').value;
+                                if ( sImgWidth == '' ) {
+                                    sImgWidth = '100';
+                                }
+                                var sImgHeight = $G('imgHeight').value;
+                                if ( sImgHeight == '' ) {
+                                    sImgHeight = '100';
+                                }
+                                oNode.setAttribute('class','imgupload');
+                                oNode.setAttribute('className','imgupload');
+                                oNode.setAttribute('src','/Public/diy_tf/image/form/pic.png');
+                                oNode.setAttribute('img_width',sImgWidth);
+                                oNode.setAttribute('img_height',sImgHeight);
+                                editor.execCommand('insertHtml',oNode.outerHTML);
+                                return true ;
+                            } catch ( e ) {
+                                alert ( '插入控件出错，请联系OA管理员解决 ');
+                                return false;
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                } else {
+                    oNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;"));
+                    var sImgWidth = $G('imgSize').value;
+                    if ( sImgWidth == '' ) {
+                        sImgWidth = '100';
+                    }
+                    var sImgHeight = $G('imgHeight').value;
+                    if ( sImgHeight == '' ) {
+                        sImgHeight = '100';
+                    }
+                    if( $G('imgSize').value!="" ){
+                        oNode.style.width = $G('imgSize').value + 'px';
+                    }
+                    if( $G('imgHeight').value!="" ) {
+                        oNode.style.height = $G('imgHeight').value + 'px';
+                    }
+                    oNode.setAttribute('img_width',sImgWidth);
+                    oNode.setAttribute('img_height',sImgHeight);
+                    delete UE.plugins['imgupload'].editdom; //使用后清空这个对象，变回新增模式
+                    return true;
+                }
+            };
+        </script>
+    </body>
+</html>
