@@ -1,17 +1,15 @@
-高级表单设计 Ueditor Formdesign Plugins leipi.org
+WEB表单设计器<br/>
+Ueditor Formdesign Plugins leipi.org
 ==========
-
-使用 Ueditor + Formdesign + Bootstrap 技术插件，提供PHP示例，其它语言可根据文档自行处理！
-
-交流Q群：143263697
-官网DEMO：http://formdesign.leipi.org
-文件：http://formdesign.leipi.org/doc.html
-详情，请到官网了解。
+百度Ueditor表单设计器扩展插件，开源免费表单设计器，它通常在、OA系统、问卷调查系统、考试系统、等领域发挥着重要作用，你可以在此基础上任意修改使功能无限强大！
+<br/>
+交流 Q群：143263697<br/>
+官网DEMO：http://formdesign.leipi.org<br/>
+开发文档：http://formdesign.leipi.org/doc.html<br/>
 <hr/>
-<p>相关产品</p>
+<h3>相关产品</h3>
 雷劈网git列表
 http://git.leipi.org/
-
 流程设计器
 http://flowdesign.leipi.org/
 
@@ -54,7 +52,7 @@ http://flowdesign.leipi.org/
 
 <hr/>
 <div class="row well">
-    <h2>Formdesign 4.1.x <small>更新日志</small></h2>
+    <h2>Formdesign 4.1.x <small>主要更新日志</small></h2>
 	 <p>
         <strong>更新时间：2014 / 12 / 06</strong>
         <br/>
