@@ -6,6 +6,42 @@
 官网：http://formdesign.leipi.org
 
 详情，请到官网了解。
+<hr/>
+<h2>已提供语言</h2>
+<ul>
+	<li><a href="http://formdesign.leipi.org/" target="_blank">PHP</a></li>
+	<li><a href="http://formdesign.leipi.org/downloads.html#java" target="_blank">JAVA</a></li>
+	<li>.NET(准备中)</li>
+</ul>
+<hr/>
+<h2>目录说明</h2>
+<table class="table table-hover">
+        <tr>
+            <th width="10%">名称</th>
+            <th width="10%">描述</th>
+        </tr>
+        <tr>
+            <td>1. Formdesign4_1</td>
+            <td>仅插件，要自行安装到Ueditor（适合升级，不适合入门）</td>
+        </tr>
+	<tr>
+            <td>2. Formdesign4_1_GBK</td>
+            <td>GBK编码，仅插件，要自行安装到Ueditor（适合升级，不适合入门）</td>
+        </tr>
+	<tr>
+            <td>3. Formdesign4_1_Ueditor1_4_2</td>
+            <td>已安装好Formdesign的Ueditor，无需另外下载UE（适合入门）</td>
+        </tr>
+	<tr>
+            <td>4. Formdesign4_1_Ueditor1_4_2_Thinkphp3_2</td>
+            <td>PHP官网示例，使用Thinkphp框架 + Ueditor + Formdesign（更适合入门，学会如何运用，其它语言可参考）</td>
+        </tr>
+	<tr>
+            <td>5. Formdesign4_1_Ueditor1_4_3[新]</td>
+            <td>已安装好Formdesign的Ueditor1.4.3(不承诺支持ie6/7)，无需另外下载UE（适合入门）</td>
+        </tr>
+      
+    </table>
 
 <hr/>
 <div class="row well">
