@@ -6,3 +6,57 @@
 官网：http://formdesign.leipi.org
 
 详情，请到官网了解。
+
+<hr/>
+<div class="row well">
+    <h2>Formdesign 4.1.x <small>更新日志</small></h2>
+	 <p>
+        <strong>更新时间：2014 / 12 / 06</strong>
+        <br/>
+        <ol>
+            <li>新增：java的示例，由snakerflow提供</li>
+        </ol>
+     </p>
+    <p>
+        <strong>更新时间：2014 / 09 / 19</strong>
+        <br/>
+        <ol>
+            <li>新增：列表控件，升级文件<code>leipi.formdesign.v4.js</code>、<code>listctrl.html</code></li>
+            <li>新增：Ueditor1.4.3示例</li>
+        </ol>
+     </p>
+     <p>
+        <strong>更新时间：2014 / 09 / 14</strong>
+        <br/>
+        <ol>
+            <li>仅更新了  <code>leipi.formdesign.v4.js</code>（复选组、下拉组在IE下的bug、下拉控件在Firefox中的bug）、<code>leipi.html</code>(在Firefox中的bug)</li>
+            <li>感谢<b> 绝版男爵、Mr ′Li </b>及时反馈。</li>
+        </ol>
+     </p>
+     <p>
+        <strong>更新时间：2014 / 8 / 21 (两次更新)</strong>
+        <br/>
+        <ol>
+            <li>仅更新了 parse_form 的正则匹配标签顺序影响结果的Bug</li>
+            <li>感谢<b> 枫叶红了 </b>及时反馈。</li>
+        </ol>
+     </p>
+    <p>
+        <strong>更新时间：2014 / 8 / 15</strong>
+        <br/>
+        <ol>
+            <li>更新了parse_form的正则匹配在IE下不正确的Bug</li>
+            <li>感谢<b> Laughing.、枫叶红了 </b>及时反馈。</li>
+        </ol>
+     </p>
+     <p>
+        <strong>更新时间：2014 / 8 / 9</strong>
+        <br/>
+        <ol>
+            <li>抱歉，4.0 【单选与复选】算法均存在Bug，请更新 parse_form解析算法和radios.html和checkboxs.html两个文件</li>
+            <li>感谢Mr.Hannibal及时反馈。</li>
+        </ol>
+     </p>
+
+   
+</div>
