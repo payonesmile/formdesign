@@ -1,18 +1,19 @@
-WEB表单设计器<br/>
-Ueditor Formdesign Plugins leipi.org
+雷劈网 WEB表单设计器
 ==========
-百度Ueditor表单设计器扩展插件，开源免费表单设计器，它通常在、OA系统、问卷调查系统、考试系统、等领域发挥着重要作用，你可以在此基础上任意修改使功能无限强大！
+<h3>简介</h3>
+<p>Ueditor Formdesign Plugins leipi.org</p>
+<p>百度Ueditor表单设计器扩展插件，开源免费表单设计器，它通常在、OA系统、问卷调查系统、考试系统、等领域发挥着重要作用，你可以在此基础上任意修改使功能无限强大！</p>
 <br/>
 交流 Q群：143263697<br/>
 官网DEMO：http://formdesign.leipi.org<br/>
 开发文档：http://formdesign.leipi.org/doc.html<br/>
 <hr/>
-<h3>相关产品</h3>
-雷劈网git列表
-http://git.leipi.org/
-流程设计器
-http://flowdesign.leipi.org/
-
+<h3>雷劈网相关产品</h3>
+<ul>
+	<li><a href="http://flowdesign.leipi.org/" target="_blank">流程设计器</a></li>
+	<li><a href="http://qrcode.leipi.org/" target="_blank">js自动生成二维码</a></li>
+	<li><a href="http://git.leipi.org/" target="_blank">雷劈网git列表</a></li>
+</ul>
 <hr/>
 <h2>已提供语言</h2>
 <ul>
