@@ -54,6 +54,27 @@
 <hr/>
 <div class="row well">
     <h2>Formdesign 4.1.x <small>主要更新日志</small></h2>
+     <p>
+        <strong>更新时间：2014 / 12 / 07</strong>
+        <br/>
+        <ol>
+            <li>修复IE下 单选和复选，预览时无法显示默认选中状态<br/>
+			主要修改 parse_form 的2处 checked 处理<br/>
+			//if(!option['checked']) option['checked'] = ''; 注释掉这行<br/>
+            var checked = option['checked'] !=undefined ? 'checked="checked"' : '';//这里使用undefined来判断<br/>
+
+			</li>
+		
+        </ol>
+     </p>
+    <p>
+        <strong>更新时间：2014 / 12 / 07</strong>
+        <br/>
+        <ol>
+            <li修复IE下 单选和复选，预览时无法显示默认选中状态</li>
+        </ol>
+     </p>
+
 	 <p>
         <strong>更新时间：2014 / 12 / 06</strong>
         <br/>
