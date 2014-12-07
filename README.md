@@ -1,11 +1,20 @@
 高级表单设计 Ueditor Formdesign Plugins leipi.org
 ==========
 
-使用 Ueditor + Bootstrap 技术插件，提供PHP示例，其它语言可根据文档自行处理！
+使用 Ueditor + Formdesign + Bootstrap 技术插件，提供PHP示例，其它语言可根据文档自行处理！
 
-官网：http://formdesign.leipi.org
-
+交流Q群：143263697
+官网DEMO：http://formdesign.leipi.org
+文件：http://formdesign.leipi.org/doc.html
 详情，请到官网了解。
+<hr/>
+<p>相关产品</p>
+雷劈网git列表
+http://git.leipi.org/
+
+流程设计器
+http://flowdesign.leipi.org/
+
 <hr/>
 <h2>已提供语言</h2>
 <ul>
@@ -95,4 +104,7 @@
      </p>
 
    
+</div>
+<div class="alert alert-error">
+    <a href="http://formdesign.leipi.org/downloads/history.html">查看历史版本</a>
 </div>
