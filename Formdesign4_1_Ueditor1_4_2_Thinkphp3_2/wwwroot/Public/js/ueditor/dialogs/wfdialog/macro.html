@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <script type="text/javascript" src="../internal.js"></script>
+        <script type="text/javascript" src="../../../jquery.js"></script>
+        <script type="text/javascript" src="../../../bootstrap/bootstrap.js"></script>
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            html,body {font-size: 12px;}
+            body { padding-left: 20px;padding-right: 20px; }
+            .controls input {
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="table table-striped table-bordered" style="margin-top:18px;margin-bottom: 0;">
+            <tr>
+                <th><span>宏标记及说明</span></th>
+                <th><span>操作</span></th>
+            </tr>
+            <tr>
+                <td title="说明：代表表单名称">#[表单]</td>
+                <td><a class="btn" data="#[macro_form]" value="添加" onclick="fnAdd(this);"><i class="icon icon-plus"></i></a>
+            </tr>
+            <tr>
+                <td title="说明：代表文号或说明">#[文号]</td>
+                <td ><a class="btn" data="#[macro_run_name]" value="添加" onclick="fnAdd(this);"><i class="icon icon-plus"></i></a>
+            </tr>
+            <tr>
+                <td title="说明：代表文号计数器">#[文号计数器]</td>
+                <td ><a class="btn" data="#[macro_counter]" value="添加" onclick="fnAdd(this)"><i class="icon icon-plus"></i></a>
+            </tr>
+            <tr>
+                <td title="说明：代表流程开始时间">#[时间]</td>
+                <td ><a class="btn" data="#[macro_time]" onclick="fnAdd(this)"><i class="icon icon-plus"></i></a>
+            </tr>
+            <tr>
+                <td title="说明：代表工作流水号">#[流水号]</td>
+                <td ><a class="btn" data="#[macro_run_id]" value="添加" onclick="fnAdd(this)"><i class="icon icon-plus"></i></a>
+            </tr>
+            <tr>
+                <td title="说明：将列出该工作所有的会签意见，或指定步骤编号的会签意见">
+                    <div class="controls">
+                        <div class="input-prepend input-append">
+                            <span class="add-on">#[会签意见</span><input title="步骤编号" placeholder="步骤编号" id="sign_no" size="4" type="text"> <input class="showTips" type="text" data-content="格式表达式说明: <br>{C}：表示意见内容<br>{Y}：表示年<br>
+																																							 {M}：表示月<br>
+																																							 {D}：表示日<br>
+																																							 {H}：表示时<br>
+																																							 {I}：表示分<br>
+																																							 {S}：表示秒<br>
+																																							 {U}：表示用户姓名<br>
+																																							 {P}：表示角色<br>
+																																							 {S}：表示步骤名称<br>
+																																							 {SD}：表示短部门<br>
+																																							 {LD}：表示长部门<br>
+																																							 {SH}：表示手写签章<br>
+																																							 例如:{C} {U} {Y}{M}{D}
+																																							 则显示样式为: xxxx 张三 20090202" rel="popover" title="格式表达式" placeholder="格式表达式" class="span2" id="style" size="13"><span class="add-on">]</span>
+                            <select id="signType"><option value="">按步骤实际编号</option><option value="*">按步骤设计编号</option></select>
+                        </div>
+                    </div>
+                </td>
+                <td ><a class="btn" value="添加" data="#[macro_sign" onclick="fnAdd(this)"><i class="icon icon-plus"></i></a>
+            </tr>
+            <tr>
+                <td title="说明：列出所有附件，或者第N个附加，N=1,2,3...">
+                    <div class="controls">
+                        <div class="input-prepend input-append">
+                            <span class="add-on">#[附件</span><input title="步骤编号" placeholder="步骤编号" id="file_no" size="4" type="text"><span class="add-on">]</span>
+                        </div>
+                    </div>
+                </td>
+                <td><a class="btn" value="添加" data="#[macro_attach" onclick="fnAdd(this)"><i class="icon icon-plus"></i></a>
+            </tr>
+            <tr>
+                <td title="说明：列出实际步骤超时时间">
+                    <div class="controls">
+                        <div class="input-prepend input-append">
+                            <span class="add-on">#[超时</span><input title="步骤编号" placeholder="步骤编号" id="timeout_no" size="4" type="text"><span class="add-on">]</span>
+                        </div>
+                    </div>
+                </td>
+                <td><a class="btn" data="#[macro_timeout" value="添加" onclick="fnAdd(this)"><i class="icon icon-plus"></i></a>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            window.onload = function() {
+                $('.showTips').popover({placement:'top'});
+            }
+            function fnAdd( btn ) {
+                var macro = $(btn).attr('data');
+                if( macro.indexOf("#[macro_attach") >= 0 || macro.indexOf("#[macro_sign") >= 0 || macro.indexOf("#[macro_timeout") >= 0 ) {
+                    var obj = $(btn).parent().siblings().find('input').get(0);
+                    if( (obj.value <= 0 || obj.value % 1 != 0 ) && obj.value != "" ) {
+                        alert("请输入有效数字！");
+                        obj.value = '';
+                        return false;
+                    }
+                    if( obj.id == "file_no" ) {
+                        macro = "#[macro_attach" + obj.value + "]";
+                    } else if( obj.id == "timeout_no" ) {
+                        if( obj.value == "" ) {
+                            alert("步骤号不能为空！");
+                            return;
+                        }
+                        macro = "#[macro_timeout" + obj.value + "]";
+                    } else if( obj.id == "sign_no" ) {
+                        macro="#[macro_sign" + obj.value + $G('signType').value + "]" + "[" + $G("style").value + "]";
+                    }
+                    obj.value = '';
+                }
+                editor.execCommand('insertHtml',macro);
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+mysqli 驱动增强 配合 CommonModel使用
+	\ThinkPHP\Library\Think\Db\Driver\Mysqli.class.php
+ajaxReturn 的 json 的输出头 防止低版本IE提示下载   
+	\ThinkPHP\Library\Think\Controller.class.php
+view 修改 X-Powered-By 为自己的信息
+	\ThinkPHP\Library\Think\View.class.php
+
+增加了 Library\Org扩展

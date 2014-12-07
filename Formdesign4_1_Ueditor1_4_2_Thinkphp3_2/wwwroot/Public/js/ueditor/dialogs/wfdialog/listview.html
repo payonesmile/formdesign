@@ -1,0 +1,668 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <script type="text/javascript" src="../internal.js"></script>
+        <script type="text/javascript" src="../../../jquery.js"></script>
+        <script type="text/javascript" src="../../../bootstrap/bootstrap.js"></script>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            a {text-decoration: none;}
+            html,body {font-size: 12px;}
+            select { width:121px;}
+            body {
+                padding-left: 20px;padding-right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="tblwrap" style="padding-top:10px;">
+            <table class="table table-condensed " style="margin-top:18px;margin-bottom: 0;">
+                <thead>
+                    <tr>
+                        <td> <span> 控件名称 ：</span> <input id="listName" placeholder="必填项" type="text" size="20" /> <span class="label label-important">*</span></td>
+                        <td> <span> 数据来源 ：</span>
+                            <select onchange="javascript:fnGetData(this.value);" style="width:115px;" name="datasrc" id="datasrc">
+                                <option value="">选择数据来源</option>
+                            </select>
+                        </td>
+                        <td>
+                            <a class="btn btn-large" title="增加10条记录" onclick="fnAddRows(10)"><i class="icon-plus"></i>10</a>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-large disabled" onclick="fnSlide(-1);" id="carousel_prev"><i class="icon-arrow-left"></i></button>
+                                <button class="btn btn-large disabled" onclick="fnSlide(1);" id="carousel_next"><i class="icon-arrow-right"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id="hidden" style="display:none;">
+                    <tr>
+                        <td><span class="badge">@a</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_@a" type="text"> </td>
+                        <td title="Tab键切换输入框"> <input id="size_@a" type="text" size="1" value="10"> </td>
+                        <td title="Tab键切换输入框"> <label><input type="checkbox" id="sum_@a"> </label> </td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_@a">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input class="span" id="colvalue_@a" type="text">  </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-striped table-bordered table-condensed" style="margin-bottom:0;" id="tbl">
+                <thead>
+                    <tr>
+                        <th> <span>序号</span> </th>
+                        <th> <span>表头</span> </th>
+                        <th> <span>宽度</span> </th>
+                        <th> <span>合计</span> <a id="showCountTips" data-content="在该列的底部显示该列的合计数值" rel="popover"><i class="icon-info-sign"></i></a> </th>
+                        <th> <span id="datatype">数据类型</span> <a id="showDataTypeTips" rel="popover" data-content="计算公式说明：用[1] [2] [3]等代表某列的数值。运算符支持+,-,*,/,%等。"><i class="icon-info-sign"></i></a> </th>
+                        <th> <span>值</span> <a id="showValueTips" data-content="数据类型的默认值。多个值之间用英文逗号分隔。当数据类型为数据来源或日期时，默认值无效。" rel="popover"><i class="icon-info-sign"></i></a></th>
+                    </tr>
+                </thead>
+                <tbody id="tbl1">
+                    <tr>
+                        <td><span class="badge">1</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_1" type="text" > </td>
+                        <td title="Tab键切换输入框"> <input id="size_1" type="text" size="1" value="10"> </td>
+                        <td title="Tab键切换输入框"> <label> <input type="checkbox" id="sum_1"> </label> </td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_1">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框">
+                            <input id="colvalue_1" class="span" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">2</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_2" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_2" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label> <input type="checkbox" id="sum_2" /> </label> </td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_2">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_2" class="span" type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">3</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_3" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_3" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label> <input type="checkbox" id="sum_3" /> </label></td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_3">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_3" class="span"  type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">4</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_4" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_4" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框">	<label><input type="checkbox" id="sum_4" /></label> </td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_4">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_4" class="span" type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">5</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_5" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_5" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label><input type="checkbox" id="sum_5" /></label></td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_5">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_5" class="span" type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">6</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_6" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_6" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label><input type="checkbox" id="sum_6" /></label></td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_6">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_6" class="span" type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">7</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_7" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_7" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label><input type="checkbox" id="sum_7" /></label> </td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_7">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_7" class="span" type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">8</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_8" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_8" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label><input type="checkbox" id="sum_8" /> </label></td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_8">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_8" class="span" type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">9</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_9" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_9" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label><input type="checkbox" id="sum_9" /></label> </td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_9">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_9" class="span" type="text" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge">10</span></td>
+                        <td title="Tab键切换输入框"> <input id="item_10" type="text" /> </td>
+                        <td title="Tab键切换输入框"> <input id="size_10" type="text" size="1" value="10" /> </td>
+                        <td title="Tab键切换输入框"> <label><input type="checkbox" id="sum_10" /></label> </td>
+                        <td title="Tab键切换输入框">
+                            <select id="coltype_10">
+                                <option value="text">单行输入框</option>
+                                <option value="textarea">多行输入框</option>
+                                <option value="select">下拉菜单</option>
+                                <option value="radio">单选框</option>
+                                <option value="checkbox">复选框</option>
+                                <option value="datetime">日期</option>
+                                <option value="calc">计算公式</option>
+                            </select>
+                        </td>
+                        <td title="Tab键切换输入框"> <input id="colvalue_10" class="span" type="text" /> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><!-- end tblwrap-->
+        <div style="display:none;">
+
+        </div>
+        <script type="text/javascript">
+            var oNode = null;
+            var rows_count = 10;
+            var adefaultDatatype = ['text','textarea','select','radio','checkbox','datetime','calc'];
+            $('#tbl').find('select').live('change',function(){
+                var oParentObj = this.parentNode;
+                var nId = $(this).attr('id').substr(-1,1);
+                switch ($(this).val()) {
+                    case 'text':
+                    case 'textarea':
+                    case 'select':
+                    case 'radio':
+                    case 'checkbox':
+                    case 'calc':
+                        if($(oParentObj).next().find('input').val()==''){
+                            $(oParentObj).next().html('<input id="colvalue_' + nId + '" class="span" type="text" />');
+                        }
+                        break;
+                    case 'datetime':
+                        $(oParentObj).next().find('input').val('').addClass('uneditable-input').attr('disabled','disabled');
+                        break;
+                    default:
+                        var checked = '';
+                        //暂时没有好的方法解决这个查询字段的选中状态判断，只能先放一个全局数组里判断,这个数组定义在window.onload函数里。
+                        if ( oNode ) {
+                            var sDataQuery = oNode.getAttribute('data_query');
+                            var aDataQuery = sDataQuery ? sDataQuery.split('`') : null;
+                            if (aDataQuery && aDataQuery[nId - 1] == '1'){
+                                checked = ' checked';
+                            }
+                        }
+                        var sQueryField = "<label><input type='checkbox' id = 'query_" + nId + "'" + checked + " value='1' />作为查询字段</label>";
+                        $(oParentObj).next().html(sQueryField)
+                        break;
+                }
+            })
+            //初始化数据来源
+            fnInitDataSrc();
+            window.onload = function() {
+                //提示信息初始化
+                $('#showCountTips').popover({placement:'left'});
+                $('#showValueTips').popover({placement:'left'});
+                $('#showDataTypeTips').popover({placement:'left'});
+                //如果是编辑控件
+                if( UE.plugins['listview'].editdom ) {
+                    oNode = UE.plugins['listview'].editdom;
+                    $G('listName').value = oNode.getAttribute('title');
+					
+                    var sLvTitle = oNode.getAttribute('lv_title'),
+                    sLvSize = oNode.getAttribute('lv_size'),
+                    sLvSum = oNode.getAttribute('lv_sum'),
+                    sLvColType = oNode.getAttribute('lv_coltype'),
+                    sLvColValue = oNode.getAttribute('lv_colvalue'),
+                    sDataTable = oNode.getAttribute('data_table'),
+                    sDataField = oNode.getAttribute('data_field'),
+                    sDataQuery = oNode.getAttribute('data_query');
+		
+                    var aLvTitle = sLvTitle.split('`'),
+                    aLvSize = sLvSize.split('`'),
+                    aLvSum = sLvSum ? sLvSum.split('`') : null,
+                    aLvColType = sLvColType ? sLvColType.split('`') : null,
+                    aLvColValue = sLvColValue ? sLvColValue.split('`') : null;
+
+                    if (aLvTitle.length -1 > 10) {
+                        rows_count = aLvTitle.length -1;
+                    }
+                    //包含数据源的情况
+                    if ( sDataTable ) {
+                        var sUrl = 'wf.php?mod=workflowsetup&do=formdesignaction&act=getdata&op=data&datasrc=' + sDataTable;
+                        ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                                if( xhr!='' ) {
+                                    for( var i = 1; i <= rows_count; i++ ) {
+                                        fnAddDataSelect(i,xhr.responseText,aLvColType[i-1],(i == rows_count ? true : false));
+                                        $('#coltype_' + i).change();
+                                    }
+                                    $G('datasrc').value = sDataTable;
+                                }
+                            },onerror:function() {
+                                alert('Request TimeOut');
+                            }});
+                    }
+                    for ( var i = 0;i < aLvTitle.length-1; i++ ) {
+                        if ( (i+1) > 10 ) {
+                            fnAddRows(i);
+                        }
+                        var sItem = 'item_' + (i + 1),
+                        sSize = 'size_' + (i + 1),
+                        sNum = 'sum_' + (i + 1),
+                        sColtype = 'coltype_' + (i + 1),
+                        sColValue = 'colvalue_' + (i + 1);
+                        $G(sItem).value = aLvTitle[i];
+                        $G(sSize).value = aLvSize[i];
+                        if ( sLvSum ) {
+                            $G(sNum).checked = aLvSum[i] == 1 ? true : false;
+                        }
+                        if ( sLvColType ) {
+                            $('#' + sColtype).val(aLvColType[i]);
+                        }
+                        if ( sLvColValue ) {
+                            if($.inArray(aLvColType[i],adefaultDatatype) !== -1){
+                                $G(sColValue).value = aLvColValue[i];
+                            }
+                        }
+                    }
+					
+                }
+            }
+            /**
+             *	初始化数据来源
+             */
+            function fnInitDataSrc(){
+                var sUrl = 'wf.php?mod=workflowsetup&do=formdesignaction&act=getconfig&op=data';
+                ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                        if( xhr!='' ) {
+                            var oJson = jQuery.parseJSON(xhr.responseText);
+                            var html = '';
+                            $.each(oJson,function(i,j){
+                                html += '<option value = "' + i + '">';
+                                html += j.name + '</option>';
+                            })
+                            $('#datasrc').append(html);
+                        }
+                    },onerror:function() {
+                        alert('Request DataSrc TimeOut');
+                    }});
+            }
+            /**
+             * 增加多行
+             * @param int addNum 要增加的行数
+             * @global int rows_count 全局的行数
+             */
+            function fnAddRows( addNum ) {
+                for( var i = rows_count + 1; i <= rows_count + addNum; i ++ ) {
+                    fnAddRow(i);
+                }
+                rows_count += addNum;
+                var index = Math.ceil(rows_count / 10); //取索引并显示
+                fnShow(index);
+            }
+            /**
+             * 在当前表格内增加一行
+             * @param int i 索引
+             *
+             */
+            function fnAddRow(i) {
+                var sNode = $G('hidden').rows[0].innerHTML; //复制html
+                var sNodeReplace = sNode.replace(/\@a/g,i); //替换索引
+                var sTr = '<tr>\n' + sNodeReplace + '\n</tr>\n';//包裹成一个完成的tr
+                var index = Math.ceil(i / 10); //取索引
+                if( !$G('tbl'+index) ) { //不存在第index页则创建之
+                    var oNewTb = document.createElement('tbody');
+                    oNewTb.id = 'tbl'+index;
+                    $('#tbl').append(oNewTb.outerHTML);
+                    $('#tbl'+index).css('display','none');
+                }
+                $('#tbl'+index).append(sTr);//插入
+                //如果有数据来源则加数据选择框
+                if( $G("datasrc").value != "" ) {
+                    var sUrl = 'wf.php?mod=workflowsetup&do=formdesignaction&act=getdata&op=data&datasrc=' + $G("datasrc").value;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            if( xhr!='' ) {
+                                fnAddDataSelect(i,xhr.responseText,'');
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                }
+            }
+            /**
+             *左右滑动显示页面函数
+             * @param string steps 上一页还是下一页
+             */
+            function fnSlide(steps) {
+                //查找当前可见的页面
+                var obj = $('#tbl').find('tbody:visible');
+                //取页数索引
+                var index = obj.attr('id').substr(-1,1);
+                if(steps > 0) {
+                    var nObjNext = parseInt(index) + 1;//下一页
+                    if( $G('tbl'+nObjNext) ) { //如果有下一页，才切换
+                        $('#tbl'+nObjNext).show('normal','linear').siblings('tbody').hide();
+                    }
+                    if ( !$G('tbl'+(nObjNext+1)) ){ //否则更改下一页按钮样式，给出提醒
+                        $('#carousel_next').addClass('disabled');
+                    }
+                    if($G('tbl'+(nObjNext-1))){ //同样更改上一页按钮的样式
+                        $('#carousel_prev').hasClass('disabled') ? $('#carousel_prev').removeClass('disabled') : '';
+                    }
+                } else {
+                    var nObjPrev = parseInt(index) - 1; //同上
+                    if( $G('tbl'+nObjPrev) ) {
+                        $('#tbl'+nObjPrev).show('normal','linear').siblings('tbody').hide();
+                    }
+                    if ( !$G('tbl'+(nObjPrev-1)) ){
+                        $('#carousel_prev').addClass('disabled');
+                    }
+                    if($G('tbl'+(nObjPrev+1))){
+                        $('#carousel_next').hasClass('disabled') ? $('#carousel_next').removeClass('disabled') : '';
+                    }
+                }
+                return false;
+            }
+            /**
+             * 根据给出的索引值显示页面
+             * @param int nIndex 以10行为一页，此处是代表第几页的索引
+             */
+            function fnShow( nIndex ){
+                if($G('tbl' + nIndex).style.display == 'block') {
+                    return;
+                }
+                if( nIndex > 1 ) {
+                    $('#carousel_prev').removeClass('disabled');
+                    $('#carousel_next').removeClass('disabled');
+                }
+                $('#tbl' + nIndex).show('normal','linear').siblings('tbody').hide();
+            }
+            /**
+             * 更新选项到表格内的下拉列表
+             * @param int nIndex 在表格内的索引
+             * @param string 要插入的内容
+             * @param string sFieldData 是否有指定值？
+             * @param bool 是否高亮提醒表头，让用户知道有数据插入
+             * @author mrz
+             */
+            function fnAddDataSelect( nIndex,sStr,sFieldData,bFocus) {
+                var sNode = $('#hidden').find('select').html();
+                $('#coltype_' + nIndex).html(sNode + "<option value='' disabled>-----" + $G('datasrc').options[$G('datasrc').selectedIndex].text +"-----</option>" + sStr);
+                if ( sFieldData ) {
+                    //$('#coltype_' + nIndex).change();
+                    $G('coltype_' + nIndex).value = sFieldData;
+                }
+                if( bFocus ){
+                    $G('datatype').style.background = '#F7B326';
+                    setTimeout("$G('datatype').style.background = 'white';",80);
+                    setTimeout("$G('datatype').style.background = '#F7B326'",160);
+                    setTimeout("$G('datatype').style.background = 'white';",240);
+                    setTimeout("$G('datatype').style.background = '#F7B326';",320);
+                    setTimeout("$G('datatype').style.background = 'white';",400);
+                    setTimeout("$G('datatype').style.background = '#FEF3DE';",480);
+                    setTimeout("$G('datatype').style.background = 'white';",560);
+                }
+            }
+            //获取选定数据来源的option，更新到表格内所有的下拉列表
+            function fnGetData ( sVal ) {
+                if( sVal!='' ) {
+                    var sUrl = 'wf.php?mod=workflowsetup&do=formdesignaction&act=getdata&op=data&datasrc=' + sVal;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            if( xhr!='' ) {
+                                for( var i = 1; i <= rows_count; i++ ) {
+                                    fnAddDataSelect(i,xhr.responseText,'',(i == rows_count ? true : false));
+                                    $('#coltype_' + i).change();
+                                }
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                } else {
+                    for( var i = 1; i <= rows_count; i++ ) {
+                        fnClearDataSelect(i);
+                    }
+                }
+            }
+            //删除数据选择下拉框
+            function fnClearDataSelect(nIndex) {
+                var sNode = $('#hidden').find('select').html();
+                $('#coltype_' + nIndex).html(sNode).change();
+            }
+            //控件说明函数，切换到帮助页面或表格页面
+            dialog.onhelp = function () {
+                $('#tblwrap').slideToggle().siblings().slideToggle();
+            };
+            dialog.oncancel = function () {
+                if( UE.plugins['listview'].editdom ) {
+                    delete UE.plugins['listview'].editdom;
+                }
+            };
+            dialog.onok = function (){
+                //检查控件名称
+                if($G('listName').value == '') {
+                    alert('控件名称不能为空');
+                    $G('listName').focus();
+                    return false;
+                }
+                //选择了数据来源的，检查数据类型有没有重复的字段
+                if( $G('datasrc').value != '' ) {
+                    var sTempStr = '';
+                    for (var i = 1; i <= rows_count ; i ++ ) {
+                        var sType = $G('coltype_' + i).value;
+                        if($.inArray(sType,adefaultDatatype) !== -1) {
+                            continue;
+                        }
+                        if ( sTempStr.indexOf(sType+',') == -1 ) {
+                            sTempStr += sType + ',';
+                        } else {
+                            alert ( '数据库字段不能重复 ');
+                            return false;
+                        }
+                    }
+                }
+                var sLvTitle = '',sLvSize = '',sLvSum = '',
+                sLvColType = '' , sLvColValue = '' ,sDataField = '' ,
+                sQueryField = '', sDataFldName = '',nCount = 0 , oDataSrc = $G('datasrc');
+					
+                for (var i = 1;i <= rows_count; i ++ ) {
+                    var oItem  = $G( "item_" + i ) , oSize = $G( 'size_' + i ) ,
+                    oSum = $G( 'sum_'+i ) , oColType = $G('coltype_' + i) ,
+                    oColValue = $G('colvalue_' + i) , oQuery = $G( 'query_' + i);
+						
+                    if ( oItem.value != '') {
+                        sLvTitle += oItem.value + '`'; //表头
+                        nCount ++ ;
+                        if ( oSize.value != '' ) { //宽度
+                            sLvSize += oSize.value + '`';
+                        } else {
+                            sLvSize += '10`';
+                        }
+                        if ( oSum.checked ) { //合计
+                            sLvSum += '1`';
+                        } else {
+                            sLvSum += '0`';
+                        }
+                        if( oColType.value !== 'datetime' && $.inArray(oColType.value,adefaultDatatype) != -1) { //类型为时间的特别处理
+                            var sStr = oColValue.value;
+                            if ( sStr.substring ( sStr.length - 1 ) == ',') {
+                                sStr = sStr.substring( 0, sStr.length - 1 );
+                            }
+                        } else {
+                            var sStr = '';
+                        }
+                        sLvColType += oColType.value + '`';
+                        sLvColValue += sStr + '`';
+                        if ( $.inArray(oColType.value,adefaultDatatype) == -1 ) {
+                            sDataField += oColType.value + '`';
+                            sDataFldName += oColType.options[oColType.selectedIndex].text + '`';
+                            if ( oQuery && oQuery.checked ) {
+                                sQueryField += '1`';
+                            } else {
+                                sQueryField += '0`';
+                            }
+                        }
+                    }//end if
+                }//end for
+                if ( nCount == 0 ) {
+                    alert("表头项目不能为空");
+                    return false;
+                }
+                if( !oNode ) {
+                    var sUrl =  parent.getItemUrl;
+                    var nItemId = null;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            try {
+                                nItemId = xhr.responseText;
+                                oNode = document.createElement("img");
+                                oNode.setAttribute('title',$G('listName').value.replace("\"","&quot;"));
+                                oNode.setAttribute('name','data_' + nItemId);
+								
+                                oNode.setAttribute('lv_title',sLvTitle);
+                                oNode.setAttribute('lv_size',sLvSize);
+                                oNode.setAttribute('lv_sum',sLvSum);
+                                oNode.setAttribute('lv_coltype',sLvColType);
+                                oNode.setAttribute('lv_colvalue',sLvColValue);
+                                oNode.setAttribute('class','list_view');
+                                oNode.setAttribute('className','list_view');
+                                oNode.setAttribute('src','./static/image/form/listview.gif');
+                                if( sDataField != "" ) {
+                                    oNode.setAttribute('data_field',sDataField);
+                                    oNode.setAttribute('data_table',oDataSrc.value);
+                                    oNode.setAttribute('data_query',sQueryField);
+                                    oNode.setAttribute('data_fld_name',sDataFldName);
+                                }
+                                editor.execCommand('insertHtml',oNode.outerHTML);
+                                return true ;
+                            } catch ( e ) {
+                                alert ( '插入控件出错，请联系OA管理员解决 ');
+                                return false;
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                } else {
+                    oNode.setAttribute('title',$G('listName').value.replace("\"","&quot;"));
+                    oNode.setAttribute('lv_title',sLvTitle);
+                    oNode.setAttribute('lv_size',sLvSize);
+                    oNode.setAttribute('lv_sum',sLvSum);
+                    oNode.setAttribute('lv_coltype',sLvColType);
+                    oNode.setAttribute('lv_colvalue',sLvColValue);
+                    if( sDataField != "" ) {
+                        oNode.setAttribute('data_field',sDataField);
+                        oNode.setAttribute('data_table',oDataSrc.value);
+                        oNode.setAttribute('data_query',sQueryField);
+                        oNode.setAttribute('data_fld_name',sDataFldName);
+                    } else {
+                        oNode.removeAttribute('data_field');
+                        oNode.removeAttribute('data_table');
+                        oNode.removeAttribute('data_query');
+                        oNode.removeAttribute('data_fld_name');
+                    }
+                    delete UE.plugins['listview'].editdom; //使用后清空这个对象，变回新增模式
+                }
+            };
+        </script>
+    </body>
+</html>

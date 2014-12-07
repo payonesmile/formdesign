@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <script type="text/javascript" src="../internal.js"></script>
+        <script type="text/javascript" src="../../../jquery.js"></script>
+        <script type="text/javascript" src="../../../bootstrap/bootstrap.js"></script>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            html,body {font-size: 12px;}
+            body {
+                padding-left: 20px;padding-right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="tblwrap">
+            <table class="table table-striped table-bordered" style="margin-top:18px;margin-bottom: 0;">
+                <tr>
+                    <th><span>控件名称</span><span class="label label-important">*</span></th>
+                    <th><span>格式类型</span> <span style="float:right;"><a title="显示日历控件使用帮助" onclick="fnShowGuide();" class="btn"><i class="icon-question-sign"></i></a></span></th>
+                </tr>
+                <tr>
+                    <td> <input id="txtName" placeholder="必填项" type="text" size="20" /> </td>
+                    <td>
+                        <select id="dateFormat" onchange="fnShowDef(this.value);">
+                            <option value="yyyy-MM-dd">日期，形如：2010-09-09</option>
+                            <option value="yyyy-MM-dd HH:mm:ss">日期，形如：2010-09-09 09:25:00</option>
+                            <option value="">自定义格式</option>
+                        </select>
+                        <br/><br/>
+                        <blockquote>
+                            <input type="text" id="def_format" style="display:none;" value="">
+                        </blockquote>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="input-prepend input-append">
+                            <span class="add-on">宽</span><input  style="display:inline;" id="txtWidth" size="3" type="text"><span class="add-on">px</span> &nbsp;&nbsp;
+                            <span class="add-on">高</span><input  style="display:inline;" id="txtHeight" size="3" type="text"><span class="add-on">px</span>&nbsp;&nbsp;
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="display:none;margin-bottom: 27px;">
+            <div class="page-header">
+                <h3>日历控件帮助<span style="position: fixed;right: 20px;"><a title="回到控件属性页" onclick="fnShowGuide();" class="btn"><i class="icon-home"></i></a></span></h3>
+            </div>
+            <div>
+                <blockquote>
+                    <p>日历控件实现如下图的效果：</p>
+                </blockquote>
+                <img src="helper/calendar/calendar.jpg" />
+                <p>另外，日历控件除了有供选择的输入格式外，还支持自定义的格式，自定义格式设置要求如下：</p><br/>
+                <code>yMdHmswW</code><br/><br/>
+				分别代表：年月日时分秒星期周,可以任意组合这些元素来自定义你个性化的日期格式。<br/><br/>
+				日期格式表：<br/><br/>
+                <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>格式</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>y</code></td>
+                            <td>
+								将年份表示为最多两位数字，如果年份多于两位数，则结果中仅显示两位低位数。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>yy</code></td>
+                            <td>
+								同上，如果小于两位数，前面补零。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>yyy</code></td>
+                            <td>
+								将年份表示为三位数字。如果少于三位数，前面补零。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>yyyy</code></td>
+                            <td>
+								将年份表示为四位数字。如果少于四位数，前面补零。 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>M</code></td>
+                            <td>
+								将月份表示为从  1 至  12 的数字 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>MM</code></td>
+                            <td>
+								同上，如果小于两位数，前面补零。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>MMM</code></td>
+                            <td>
+								返回月份的缩写  一月  至  十二月  (英文状态下  Jan to Dec) 。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>MMMM</code></td>
+                            <td>
+								返回月份的全称  一月  至  十二月  (英文状态下  January to December) 。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>d</code></td>
+                            <td>
+								将月中日期表示为从  1 至  31 的数字。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>dd</code></td>
+                            <td>
+								同上，如果小于两位数，前面补零。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>H</code></td>
+                            <td>
+								将小时表示为从  0 至  23 的数字。 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>HH</code></td>
+                            <td>
+								同上，如果小于两位数，前面补零。 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>m</code></td>
+                            <td>
+								将分钟表示为从  0 至  59 的数字。 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>mm</code></td>
+                            <td>
+								同上，如果小于两位数，前面补零。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>s</code></td>
+                            <td>
+								将秒表示为从  0 至  59 的数字。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>ss</code></td>
+                            <td>
+								同上，如果小于两位数，前面补零。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>w</code></td>
+                            <td>
+								返回星期对应的数字  0 (星期天) - 6 (星期六) 。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>D</code></td>
+                            <td>
+								返回星期的缩写  一  至  六  (英文状态下  Sun to Sat)  。 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>DD</code></td>
+                            <td>
+								返回星期的全称  星期一  至  星期六  (英文状态下  Sunday to Saturday) 。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>W</code></td>
+                            <td>
+								返回周对应的数字  (1 - 53) 。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>WW</code></td>
+                            <td>
+								同上，如果小于两位数，前面补零  (01 - 53) 。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+				示例：<br/><br/>
+                <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>格式字符串</th>
+                            <th>值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>yyyy-MM-dd HH:mm:ss</code></td>
+                            <td>2012-06-12 19:20:00</td>
+                        </tr>
+                        <tr>
+                            <td><code>yy年M月</code></td>
+                            <td> 12年8月 </td>
+                        </tr>
+                        <tr>
+                            <td><code>yyyyMMdd</code></td>
+                            <td> 20080312 </td>
+                        </tr>
+                        <tr>
+                            <td><code>现在是:yyyy 年M年d HH时mm分</code></td>
+                            <td> 现在是:2012 年8月12日  19时20分 </td>
+                        </tr>
+                        <tr>
+                            <td><code>H:m:s</code></td>
+                            <td> 19:20:0 </td>
+                        </tr>
+                        <tr>
+                            <td><code>y年</code></td>
+                            <td> 8年 </td>
+                        </tr>
+                        <tr>
+                            <td><code>MMMM d, yyyy</code></td>
+                            <td> 三月  12, 2012  </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var oNode = null;
+            window.onload = function() {
+                //弹出窗口初始化函数，这里主要是判断是编辑下拉列表还是新增
+                if( UE.plugins['calendar'].editdom ){
+                    oNode = UE.plugins['calendar'].editdom;
+                    $G('txtName').value = oNode.getAttribute('title');
+                    var sDateFmt = oNode.getAttribute('date_format');
+                    if ( sDateFmt == null ) {
+                        $G('dateFormat').value = "yyyy-MM-dd";
+                    } else if ( sDateFmt == "yyyy-MM-dd" ) {
+                        $G('dateFormat').options[0].selected = true;
+                    } else if ( sDateFmt == "yyyy-MM-dd HH:mm:ss" ) {
+                        $G('dateFormat').options[1].selected = true;
+                    } else {
+                        $G('dateFormat').value = "";
+                        $G('def_format').value = sDateFmt;
+                        $G('def_format').style.display = "";
+                    }
+                    var sWidth = oNode.style.width;
+                    $G('txtWidth').value = sWidth.substr(0, sWidth.length - 2);//这里的substr是为了去掉末尾的'px'
+                    var sHeight = oNode.style.height;
+                    $G('txtHeight').value = sHeight.substr(0, sHeight.length - 2);
+                }
+                $('#showTips').popover({placement:'top'});
+            }
+            function fnShowDef(val){
+                $G("def_format").style.display = val =="" ? "" : "none";
+            }
+            function fnShowGuide(){
+                $('#tblwrap').slideToggle().siblings().slideToggle();
+            }
+            dialog.oncancel = function () {
+                if( UE.plugins['calendar'].editdom ) {
+                    delete UE.plugins['calendar'].editdom;
+                }
+            };
+            dialog.onok = function (){
+                if($G('txtName').value == '') {
+                    alert('控件名称不能为空');
+                    $G('txtName').focus();
+                    return false;
+                }
+                if( !oNode ) {
+                    var sUrl =  parent.getItemUrl;
+                    var nItemId = null;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            try {
+                                nItemId = xhr.responseText;
+                                oNode = document.createElement('input');
+                                oNode.setAttribute('name','data_' + nItemId);
+                                oNode.setAttribute('title',$G('txtName').value.replace("\"","&quot;"));
+                                if( $G('dateFormat').value == '' ) {
+                                    oNode.setAttribute('date_format',$G('def_format').value);
+                                } else {
+                                    oNode.setAttribute('date_format',$G('dateFormat').value);
+                                }
+                                if( $G('txtWidth').value!=''){
+                                    oNode.style.width = $G('txtWidth').value + 'px';
+                                } else {
+                                    oNode.style.width = '100px';
+                                }
+                                if( $G('txtHeight').value!=''){
+                                    oNode.style.height = $G('txtHeight').value + 'px';
+                                } else {
+                                    oNode.style.height = '25px';
+                                }
+                                oNode.setAttribute('class', 'date') ;
+                                oNode.setAttribute('className', 'date');
+                                editor.execCommand('insertHtml',oNode.outerHTML);
+                            } catch (e) {
+                                alert ( '插入控件出错，请联系OA管理员解决 ');
+                                return false;
+                            }
+                        },
+                        error:function () {
+                            alert('Request TimeOut');
+                            return false;
+                        }
+                    })
+                } else {
+                    if( $G('txtWidth').value!=''){
+                        oNode.style.width = $G('txtWidth').value + 'px';
+                    } else {
+                        oNode.style.width = '100px';
+                    }
+                    if( $G('txtHeight').value!=''){
+                        oNode.style.height = $G('txtHeight').value + 'px';
+                    } else {
+                        oNode.style.height = '25px';
+                    }
+                    oNode.setAttribute('title',$G('txtName').value.replace("\"","&quot;"));
+                    if( $G('dateFormat').value == '' ) {
+                        oNode.setAttribute('date_format',$G('def_format').value);
+                    } else {
+                        oNode.setAttribute('date_format',$G('dateFormat').value);
+                    }
+                    delete UE.plugins['calendar'].editdom; //使用后清空这个对象，变回新增模式
+                }
+            };
+        </script>
+    </body>
+</html>

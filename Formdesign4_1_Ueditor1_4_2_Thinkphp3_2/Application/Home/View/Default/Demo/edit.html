@@ -1,0 +1,61 @@
+<extend name="Public/base" />
+
+<block name="title">
+    <title>数据操作 Ueditor FormDesign Plugins -leipi.org</title>
+    <meta name="keyword" content="ueditor formdesign plugins,ueditor扩展,web表单设计器,高级表单设计器,Leipi Form Design,web form设计器,web form designer">
+    <meta name="description" content="javascript jquery ueditor php表单设计器实例演示与下载！">
+</block>
+<block name="head">
+</block><!--end head-->
+
+<block name="body">
+
+
+<div class="bs-header" id="content">
+  <div class="container">
+
+    <h1>表单设计器使用实例演示</h1>
+    <p>
+       表单设计器通常在、OA系统、问卷调查系统、考试系统、等领域发挥着重要作用！<br /> 您也可以尝试和操作一下，本演示禁止搜索引擎收录，SEO党飘过！
+    </p>
+    
+  </div>
+</div>
+
+<div class="container">
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="/">表单设计器</a> <span class="divider">/</span></li>
+        <li><a href="{:U('/demo')}">实例</a> <span class="divider">/</span></li>
+        <li class="active"><if condition="empty($one)">添加<else/>编辑</if></li>
+    </ol>
+</div>
+
+<div class="row">
+<form action="{:U('/demo/'.$_action)}" method="post">
+<input type="hidden" value="{$one.id}" name="form_id">
+<p>
+    <label>表单名称</label>
+    <input type="text" class="span6" placeholder="必填项" name="form_name" value="{$one.form_name}">
+</p>
+<p>
+    <label>表单描述</label>
+    <textarea rows="4" class="span6" placeholder="简单描述一下也好呀" name="form_desc">{$one.form_desc}</textarea>
+</p>
+<button type="submit" name="submit_to_save" value="save" class="btn btn-success">确定保存</button>
+</form>
+
+
+</div><!--end row-->
+</div><!--end container-->
+
+
+
+
+<block name="footer_js">
+
+<!-- script end -->
+
+
+</block><!--end footer_js-->

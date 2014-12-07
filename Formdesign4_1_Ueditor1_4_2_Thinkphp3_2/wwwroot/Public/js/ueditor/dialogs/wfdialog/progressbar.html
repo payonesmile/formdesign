@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>进度条属性</title>
+        <script type="text/javascript" src="../internal.js"></script>
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../../../bootstrap/bootstrap-responsive.css">
+        <style type="text/css">
+            *{color: #838383;margin: 0;padding: 0}
+            html,body {font-size: 12px;}
+            body {
+                padding-left: 20px;padding-right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="table table-striped" style="margin-top:18px;margin-bottom: 0;">
+            <tr>
+                <th><span>控件名称</span><span class="label label-important">*</span></th>
+                <th><span>跨度</span></th>
+            </tr>
+            <tr>
+                <td>
+                    <input id="itemName" type="text" placeholder="必填项" size="20" />
+                </td>
+                <td>
+                    <input id="signType" type="text" value="5" size="2" /> %
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2">进度条样式</th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label><input type="radio" value="progress-info" name="progressstyle" checked /><code>表示信息</code></label>
+                    <div class="progress progress-info progress-striped active" style="margin:2px 0 9px 0;">
+                        <div class="bar" style="width: 20%"></div>
+                    </div>
+                    <label><input type="radio" value="progress-success" name="progressstyle" /><code>表示完成情况，进度等</code></label>
+                    <div class="progress progress-success progress-striped active" style="margin:2px 0 9px 0;">
+                        <div class="bar" style="width: 40%"></div>
+                    </div>
+                    <label><input type="radio" value="progress-warning" name="progressstyle" /><code>表示警告，比较重要的事项</code></label>
+                    <div class="progress progress-warning progress-striped active" style="margin:2px 0 9px 0;">
+                        <div class="bar" style="width: 60%"></div>
+                    </div>
+                    <label><input type="radio" value="progress-danger" name="progressstyle" /><code>表示危险，重要程度为最高</code></label>
+                    <div class="progress progress-danger progress-striped active" style="margin:2px 0 9px 0;">
+                        <div class="bar" style="width: 80%"></div>
+                    </div>
+                    <input type="hidden" id="style" />
+                    <p>进度条使用CSS3渐变/过渡/动画以实现所有效果。IE7到IE9，以及某些老版本的Firefox还不能完全支持这些特性。目前，Opera和IE还不支持动画效果。</p>
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            var oNode = null;
+            window.onload = function() {
+                //弹出窗口初始化函数，这里主要是判断是编辑下拉列表还是新增
+                if( UE.plugins['progressbar'].editdom ){
+                    oNode = UE.plugins['progressbar'].editdom;
+                    $G('itemName').value = oNode.getAttribute('title');
+                    $G('signType').value = oNode.getAttribute('sign_type');
+                    var sStyle =  oNode.getAttribute('progressstyle');
+                    for ( var i = 0; i < document.getElementsByName('progressstyle').length;i++) {
+                        if (document.getElementsByName('progressstyle')[i].value == sStyle){
+                            document.getElementsByName('progressstyle')[i].checked = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            dialog.oncancel = function () {
+                if( UE.plugins['progressbar'].editdom ) {
+                    delete UE.plugins['progressbar'].editdom;
+                }
+            };
+            dialog.onok = function (){
+                var sStyle =  '';
+                for ( var i = 0;i < document.getElementsByName('progressstyle').length; i ++) {
+                    if (document.getElementsByName('progressstyle')[i].checked){
+                        sStyle = document.getElementsByName('progressstyle')[i].value;
+                        $G('style').value = sStyle;
+                        break;
+                    }
+                }
+                if( $G('itemName').value == '') {
+                    alert('控件名称不能为空');
+                    $G('itemName').focus();
+                    return false;
+                }
+                if( !oNode ) {
+                    var sUrl =  parent.getItemUrl;
+                    ajax.request(sUrl, {timeout:60000,onsuccess:function (xhr) {
+                            try {
+                                var nItemId = xhr.responseText;
+                                oNode = document.createElement("img");
+                                oNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;"));
+                                oNode.setAttribute('name','data_' + nItemId);
+                                oNode.setAttribute('value','0');
+                                oNode.setAttribute('progressstyle',$G('style').value);
+                                if ( $G('signType').value == '' ) {
+                                    oNode.setAttribute('sign_type','1');
+                                } else {
+                                    oNode.setAttribute('sign_type',$G('signType').value);
+                                }
+                                oNode.setAttribute('class','progressbar');
+                                oNode.setAttribute('className','progressbar');
+                                oNode.setAttribute('src','/Public/diy_tf/image/form/progressbar.gif');
+                                editor.execCommand('insertHtml',oNode.outerHTML);
+                                return true ;
+                            } catch ( e ) {
+                                alert ( '插入控件出错，请联系OA管理员解决 ');
+                                return false;
+                            }
+                        },onerror:function() {
+                            alert('Request TimeOut');
+                        }});
+                } else {
+                    oNode.setAttribute('progressstyle',sStyle);
+                    oNode.setAttribute('title',$G('itemName').value.replace("\"","&quot;"));
+                    if ($G('signType').value == '') {
+                        oNode.setAttribute('sign_type','1');
+                    } else {
+                        oNode.setAttribute('sign_type',$G('signType').value);
+                    }
+                    delete UE.plugins['imgupload'].editdom; //使用后清空这个对象，变回新增模式
+                    return true;
+                }
+            };
+        </script>
+    </body>
+</html>

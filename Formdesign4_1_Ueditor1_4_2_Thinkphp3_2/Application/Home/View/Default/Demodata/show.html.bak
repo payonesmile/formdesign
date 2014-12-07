@@ -1,0 +1,44 @@
+<extend name="Public/base" />
+
+<block name="title">
+    <title>实例演示查看 Ueditor FormDesign Plugins -leipi.org</title>
+    <meta name="keyword" content="ueditor formdesign plugins,ueditor扩展,web表单设计器,高级表单设计器,Leipi Form Design,web form设计器,web form designer">
+    <meta name="description" content="javascript jquery ueditor php表单设计器实例演示与下载！">
+</block>
+<block name="head">
+</block><!--end head-->
+
+<block name="body">
+
+
+<div class="bs-header" id="content">
+  <div class="container">
+
+    <h1>预览表单</h1>
+    <p>
+       预览效果等于填表效果，如无问题请保存你的设计。
+    </p>
+    
+  </div>
+</div>
+
+<div class="container">
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="/">表单设计器</a> <span class="divider">/</span></li>
+        <li><a href="{:U('/demo')}">实例</a> <span class="divider">/</span></li>
+        <li class="active">预览表单 [{$one.form_name}]</li>
+    </ol>
+</div>
+
+
+{$design_content}
+
+</div><!--end container-->
+
+
+<block name="footer_js">
+
+
+</block><!--end footer_js-->

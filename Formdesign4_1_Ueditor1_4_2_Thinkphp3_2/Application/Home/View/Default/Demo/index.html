@@ -1,0 +1,92 @@
+<extend name="Public/base" />
+
+<block name="title">
+    <title>实例演示 Ueditor FormDesign Plugins -leipi.org</title>
+    <meta name="keyword" content="ueditor formdesign plugins,ueditor扩展,web表单设计器,高级表单设计器,Leipi Form Design,web form设计器,web form designer">
+    <meta name="description" content="javascript jquery ueditor php表单设计器实例演示与下载！">
+</block>
+<block name="head">
+</block><!--end head-->
+
+<block name="body">
+
+
+<div class="bs-header" id="content">
+  <div class="container">
+
+    <h1>表单设计器使用实例演示</h1>
+    <p>
+       表单设计器通常在、OA系统、问卷调查系统、考试系统、等领域发挥着重要作用！<br /> 本实例仅方便大家了解使用方法和简化二次开发，你可以任意修改使功能无限强大！
+    </p>
+    
+  </div>
+</div>
+
+<div class="container">
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="/">表单设计器</a> <span class="divider">/</span></li>
+        <li class="active">实例</li>
+    </ol>
+</div>
+
+<div class="row">
+<p>
+    <a href="{:U('/demo/add')}" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> 添加</a>
+</p>
+
+<table class="table table-hover">
+    <tr>
+        <th>ID</th>
+        <th>表单名称</th>
+        <th>表单描述</th>
+        <th>字段数</th>
+        <th>最后修改时间</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    <volist name="list" id="vo">
+    <tr>
+        <td>{$vo.id}</td>
+        <td>{$vo.form_name}</td>
+        <td>{$vo.form_desc}</td>
+        <td>{$vo.fields}</td>
+        <td>{:date('Y/m/d H:i',$vo['updatetime'])}</td>
+        <td>{:date('Y/m/d H:i',$vo['dateline'])}</td>
+        <td>
+        <if condition="$vo.fields gt 0">
+            <a href="{:U('/demodata/index/form_id/'.$vo['id'])}" target="_blank"><span class="glyphicon glyphicon-list"></span> 表单数据</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </if>
+            <a href="{:U('/demo/formdesign/form_id/'.$vo['id'])}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> 设计</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('/demo/preview/form_id/'.$vo['id'])}"  target="_blank"><span class="glyphicon glyphicon-eye-open"></span> 预览</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('/demo/edit/form_id/'.$vo['id'])}" target="_blank"><span class="glyphicon glyphicon-edit"></span> 编辑</a></td>
+    </tr>
+    </volist>
+</table>
+
+{$page}
+
+</div><!--end row-->
+
+
+<div class="row">
+<hr/>
+<h4>百度相关 <small>点一下就是对我们最大的赞助</small></h4>
+<script type="text/javascript">
+/*表单设计器DEMO 底960*22，创建于2014-6-25*/
+var cpro_id = "u1598625";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>
+</div>
+
+
+</div><!--end container-->
+
+
+
+</block><!--end body-->
+
+<block name="footer_js">
+
+<!-- script end -->
+
+
+</block><!--end footer_js-->

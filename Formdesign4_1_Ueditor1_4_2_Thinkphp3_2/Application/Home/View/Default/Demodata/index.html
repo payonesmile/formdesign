@@ -1,0 +1,71 @@
+<extend name="Public/base" />
+
+<block name="title">
+    <title>表单数据 Ueditor FormDesign Plugins -leipi.org</title>
+    <meta name="keyword" content="ueditor formdesign plugins,ueditor扩展,web表单设计器,高级表单设计器,Leipi Form Design,web form设计器,web form designer">
+    <meta name="description" content="javascript jquery ueditor php表单设计器实例演示与下载！">
+</block>
+<block name="head">
+</block><!--end head-->
+
+<block name="body">
+
+
+<div class="bs-header" id="content">
+  <div class="container">
+
+    <h1>表单设计器使用实例演示</h1>
+    <p>
+       表单设计器通常在、OA系统、问卷调查系统、考试系统、等领域发挥着重要作用！<br /> 您也可以尝试和操作一下，本演示禁止搜索引擎收录，SEO党飘过！
+    </p>
+    
+  </div>
+</div>
+
+<div class="container">
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="/">表单设计器</a> <span class="divider">/</span></li>
+        <li><a href="{:U('/demo')}">实例</a> <span class="divider">/</span></li>
+        <li class="active">表单数据 [{$form_one.form_name}]</li>
+    </ol>
+</div>
+
+<div class="row">
+<p>
+    <a href="{:U('/demodata/add/form_id/'.$form_one['id'])}" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> 添加</a>
+</p>
+
+<table class="table table-hover">
+    <tr>
+        <th>ID</th>
+        <th>标识</th>
+        <th>最后修改时间</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    <volist name="list" id="vo">
+    <tr>
+        <td>{$vo.id}</td>
+        <td>{$vo.name}</td>
+        <td>{:date('Y/m/d H:i',$vo['updatetime'])}</td>
+        <td>{:date('Y/m/d H:i',$vo['dateline'])}</td>
+        <td><a href="{:U('/demodata/edit/form_id/'.$form_one['id'].'/id/'.$vo['id'])}" target="_blank">编辑</a>&nbsp;&nbsp;<a href="{:U('/demodata/view/form_id/'.$form_one['id'].'/id/'.$vo['id'])}" target="_blank">查看</a></td>
+    </tr>
+    </volist>
+</table>
+
+{$page}
+
+</div><!--end row-->
+</div><!--end container-->
+
+
+
+
+<block name="footer_js">
+
+<!-- script end -->
+
+
+</block><!--end footer_js-->

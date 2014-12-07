@@ -1,0 +1,62 @@
+<extend name="Public/base" />
+
+<block name="title">
+    <title>数据操作 Ueditor FormDesign Plugins -leipi.org</title>
+    <meta name="keyword" content="ueditor formdesign plugins,ueditor扩展,web表单设计器,高级表单设计器,Leipi Form Design,web form设计器,web form designer">
+    <meta name="description" content="javascript jquery ueditor php表单设计器实例演示与下载！">
+</block>
+<block name="head">
+</block><!--end head-->
+
+<block name="body">
+
+
+<div class="bs-header" id="content">
+  <div class="container">
+
+    <h1>表单设计器使用实例演示</h1>
+    <p>
+       查看表单时，二维码 和 进度条会以直观方式展示！
+    </p>
+    
+  </div>
+</div>
+
+<div class="container">
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="/">表单设计器</a> <span class="divider">/</span></li>
+        <li><a href="{:U('/demo')}">实例</a> <span class="divider">/</span></li>
+        <li><a href="{:U('/demodata/index/form_id/'.$form_one['id'])}">表单[{$form_one.form_name}]</a> <span class="divider">/</span></li>
+        <li class="active">查看</li>
+    </ol>
+</div>
+
+<div class="row">
+<form action="{:U('/demodata/'.$_action)}" method="post">
+<input type="hidden" value="{$form_one.id}" name="form_id">
+<input type="hidden" value="{$one.id}" name="id">
+<p>
+    标识
+    <input type="text" class="form-control" placeholder="必填项" name="name" value="{$one.name}">
+</p>
+<hr/>
+<p>
+    {$design_content}
+</p>
+</form>
+
+
+</div><!--end row-->
+</div><!--end container-->
+
+
+
+
+<block name="footer_js">
+
+<!-- script end -->
+
+
+</block><!--end footer_js-->
