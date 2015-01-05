@@ -808,8 +808,6 @@ if($controller['action'] =='view')
                 $date_format = 'm月d日';break;
             case 'sys_time':
                 $date_format = 'H:i:s';break;
-            case 'sys_date':
-                $date_format = 'Y-m-d';break;
             case 'sys_datetime':
                 $date_format = 'Y-m-d H:i:s';break;
             case 'sys_week'://周
@@ -830,11 +828,6 @@ if($controller['action'] =='view')
             case 'sys_realname':
                 if(!$def_value)
                     $def_value = $controller['user']['real_name'];
-                $tpl = str_replace('{macros}',$def_value,$tpl);
-                break;
-            case 'sys_realname':
-                if(!$def_value)
-                    $def_value = $controller['user']['dept'];
                 $tpl = str_replace('{macros}',$def_value,$tpl);
                 break;
             default:

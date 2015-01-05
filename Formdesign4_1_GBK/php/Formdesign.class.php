@@ -3,23 +3,23 @@
 class Formdesign
 {
     /*
-        PHP ½âÎö±íµ¥
-        template ±íµ¥Éè¼ÆÆ÷ÀïµÄHtmlÄÚÈİ
-        fields ×Ö¶Î×ÜÊı
+        PHP è§£æè¡¨å•
+        template è¡¨å•è®¾è®¡å™¨é‡Œçš„Htmlå†…å®¹
+        fields å­—æ®µæ€»æ•°
     */
     public function  parse_form($template,$fields=0)
     {
-        //»ñÈ¡±êÇ©
+        //è·å–æ ‡ç­¾
         //$preg =  "/<(img|input|textarea|select).*?(<\/select>|<\/textarea>|\/>)/s";
         /*
-            //ÕıÔò  radios|checkboxs|select 
-            js Æ¥ÅäµÄ±ß½ç |--|  ÒòÎªµ±Ê¹ÓÃ {} Ê±js±¨´í
-            php Òª±£³ÖÒ»ÖÂ£¬Ò²Ê¹ÓÃ |--| Ò²¿ÉÒÔÊÇÖ±½Ó {|- -|}
+            //æ­£åˆ™  radios|checkboxs|select 
+            js åŒ¹é…çš„è¾¹ç•Œ |--|  å› ä¸ºå½“ä½¿ç”¨ {} æ—¶jsæŠ¥é”™
+            php è¦ä¿æŒä¸€è‡´ï¼Œä¹Ÿä½¿ç”¨ |--| ä¹Ÿå¯ä»¥æ˜¯ç›´æ¥ {|- -|}
         */
         $preg =  "/(\|-<span(((?!<span).)*leipiplugins=\"(radios|checkboxs|select)\".*?)>(.*?)<\/span>-\||<(img|input|textarea|select).*?(<\/select>|<\/textarea>|\/>))/s";
-        //»ñÈ¡ÊôĞÔ  ĞŞ¸ÄÎª¿É±ä µÄÆ¥Åä
+        //è·å–å±æ€§  ä¿®æ”¹ä¸ºå¯å˜ çš„åŒ¹é…
         $preg_attr ="/(\w+)=\"(.?|.+?)\"/s";
-        //»ñÈ¡µ¥Ñ¡×é¸´Ñ¡
+        //è·å–å•é€‰ç»„å¤é€‰
         $preg_group ="/<input.*?\/>/s";
         $template_parse =$template; 
         preg_match_all($preg,$template,$temparr);
@@ -38,14 +38,14 @@ class Formdesign
                 $is_new=false;
 
 
-                if(in_array($tag,array('radios','checkboxs')))//ÕâÁ½¸öÔÚÏÂÃæÒ²Òª//Çå¿Õ±ß½ç
+                if(in_array($tag,array('radios','checkboxs')))//è¿™ä¸¤ä¸ªåœ¨ä¸‹é¢ä¹Ÿè¦//æ¸…ç©ºè¾¹ç•Œ
                 {
 
                     $plugin = $temparr[2][$pno];
 
                 }else if($tag =='select')
                 {
-                    $plugin = str_replace(array('|-','-|'),'',$plugin);//Çå¿Õ±ß½ç
+                    $plugin = str_replace(array('|-','-|'),'',$plugin);//æ¸…ç©ºè¾¹ç•Œ
                 }
                  
 
@@ -84,10 +84,10 @@ class Formdesign
                     }
                 }
 
-                if($tag =='checkboxs') /*¸´Ñ¡×é  ¶à¸ö×Ö¶Î */
+                if($tag =='checkboxs') /*å¤é€‰ç»„  å¤šä¸ªå­—æ®µ */
                 {
                     $plugin = $temparr[0][$pno];
-                    $plugin = str_replace(array('|-','-|'),'',$plugin);//Çå¿Õ±ß½ç
+                    $plugin = str_replace(array('|-','-|'),'',$plugin);//æ¸…ç©ºè¾¹ç•Œ
 
                     $name = 'checkboxs_'.$checkboxs;
                     $attr_arr_all['parse_name'] = $name;
@@ -134,17 +134,17 @@ class Formdesign
                                 'leipiplugins'=>$attr_arr_all['leipiplugins']
                             );
                         }
-                        $checked = isset($option['checked']) ? 'checked="checked"' : '';//ÅĞ¶Ïisset ¾Í¿ÉÒÔ,ÔÚieÖĞ£¬checkedµÄÖµÊÇ¿ÕµÄ
+                        $checked = isset($option['checked']) ? 'checked="checked"' : '';//åˆ¤æ–­isset å°±å¯ä»¥,åœ¨ieä¸­ï¼Œcheckedçš„å€¼æ˜¯ç©ºçš„
 						
                         $attr_arr_all['content'] .= '<input type="checkbox" name="'.$option['name'].'" value="'.$option['value'].'" '.$checked.'/>'.$option['value'].'&nbsp;';
                        
                     }
-                    $attr_arr_all['content'] .= '</span>'; //ĞèÒªcontent   replace
+                    $attr_arr_all['content'] .= '</span>'; //éœ€è¦content   replace
 
                     //parse
                     $template = self::str_replace_once($plugin,$attr_arr_all['content'],$template);
                     $template_parse = self::str_replace_once($plugin,'{'.$name.'}',$template_parse);
-                    $template_parse = str_replace(array('{|-','-|}'),'',$template_parse);//Çå¿Õ±ß½ç
+                    $template_parse = str_replace(array('{|-','-|}'),'',$template_parse);//æ¸…ç©ºè¾¹ç•Œ
                     $template_data[$pno] = $attr_arr_all;
                     $checkboxs++;
 
@@ -152,10 +152,10 @@ class Formdesign
                 }
                 else if($name) 
                 {
-                    if($tag =='radios') /*µ¥Ñ¡×é  Ò»¸ö×Ö¶Î*/
+                    if($tag =='radios') /*å•é€‰ç»„  ä¸€ä¸ªå­—æ®µ*/
                     {
                         $plugin = $temparr[0][$pno];
-                        $plugin = str_replace(array('|-','-|'),'',$plugin);//Çå¿Õ±ß½ç
+                        $plugin = str_replace(array('|-','-|'),'',$plugin);//æ¸…ç©ºè¾¹ç•Œ
 
                         $attr_arr_all['value'] = '';
                         $options = $temparr[5][$pno];
@@ -179,11 +179,11 @@ class Formdesign
                             }
                             $option['name'] = $attr_arr_all['name'];
                             $attr_arr_all['options'][] = $option;
-                            $checked = isset($option['checked']) ? 'checked="checked"' : '';//ÅĞ¶Ïisset ¾Í¿ÉÒÔ,ÔÚieÖĞ£¬checkedµÄÖµÊÇ¿ÕµÄ
+                            $checked = isset($option['checked']) ? 'checked="checked"' : '';//åˆ¤æ–­isset å°±å¯ä»¥,åœ¨ieä¸­ï¼Œcheckedçš„å€¼æ˜¯ç©ºçš„
                             $attr_arr_all['content'] .='<input type="radio" name="'.$attr_arr_all['name'].'" value="'.$option['value'].'"  '.$checked .'/>'.$option['value'].'&nbsp;';
 
                         }
-                        $attr_arr_all['content'] .= '</span>'; //ĞèÒªcontent   replace
+                        $attr_arr_all['content'] .= '</span>'; //éœ€è¦content   replace
                         
                     }else
                     {
@@ -192,7 +192,7 @@ class Formdesign
 
                     $template = self::str_replace_once($plugin,$attr_arr_all['content'],$template);
                     $template_parse = self::str_replace_once($plugin,'{'.$name.'}',$template_parse);
-                    $template_parse = str_replace(array('{|-','-|}'),'',$template_parse);//Çå¿Õ±ß½ç
+                    $template_parse = str_replace(array('{|-','-|}'),'',$template_parse);//æ¸…ç©ºè¾¹ç•Œ
                     if($is_new)
                     {
                         $add_fields[$name] = array(
@@ -219,7 +219,7 @@ class Formdesign
         
         
     }
-    /*Ö»Ìæ»»Ò»´Î*/
+    /*åªæ›¿æ¢ä¸€æ¬¡*/
     public function str_replace_once($needle,$replace,$haystack)
     {
         $pos = strpos($haystack,$needle);
@@ -231,7 +231,7 @@ class Formdesign
             return substr_replace($haystack,$replace,$pos,strlen($needle));
         }
     }
-    //»ñÈ¡¿Ø¼ş×Ö¶ÎÀàĞÍ µÄsql 
+    //è·å–æ§ä»¶å­—æ®µç±»å‹ çš„sql 
     public function field_type_sql($leipiplugins)
     {
         if($leipiplugins=='textarea' or $leipiplugins=='listctrl')
@@ -247,15 +247,15 @@ class Formdesign
             return 'varchar(255) NOT NULL DEFAULT \'\'';
         }
     }
-    //·µ»Ø±íÃû
+    //è¿”å›è¡¨å
     public function tname($tname)
     {
         $tname = strtolower($tname);
         return C('DB_PREFIX').$tname;
     }
     /*
-    * ´´½¨Êı¾İ±í£¬ Í¨¹ıfields×Ô¶¯¼ÆËã×Ö¶ÎÔö³¤
-    * ±íÖĞ´æÈ¡Êı¾İÀûÓÃ foreign_id ½øĞĞ
+    * åˆ›å»ºæ•°æ®è¡¨ï¼Œ é€šè¿‡fieldsè‡ªåŠ¨è®¡ç®—å­—æ®µå¢é•¿
+    * è¡¨ä¸­å­˜å–æ•°æ®åˆ©ç”¨ foreign_id è¿›è¡Œ
     */
     public function parse_table($formid,$add_fields)
     {
@@ -314,29 +314,29 @@ class Formdesign
     }
     
     /*
-    * ±àÒë×Ö¶Î
+    * ç¼–è¯‘å­—æ®µ
     * $controller = array(
-    *   'action'=>'edit,view,preview', //±à¼­ »ò ²é¿´  ¡¢Ô¤ÀÀ  Á½ÖÖ²»Í¬Çé¿ö½âÎö
+    *   'action'=>'edit,view,preview', //ç¼–è¾‘ æˆ– æŸ¥çœ‹  ã€é¢„è§ˆ  ä¸¤ç§ä¸åŒæƒ…å†µè§£æ
     *   'user'=>array(
     *           'uid'=>9527,
-    *           'real_name'=>'ÌÆ²®»¢',
-    *           'dept'=>'»ª¸®',
+    *           'real_name'=>'å”ä¼¯è™',
+    *           'dept'=>'ååºœ',
     *       ),
-    *   'else'='ÆäËüÒª´«½øÀ´µÄÊı¾İ',
+    *   'else'='å…¶å®ƒè¦ä¼ è¿›æ¥çš„æ•°æ®',
     * );
     */
     public function unparse_form($form,$form_data=array(),$controller=array())
     {
         $tpl_data = unserialize($form['content_data']);
         $tpl = $form['content_parse'];
-        //±í¸ñÑùÊ½
+        //è¡¨æ ¼æ ·å¼
         $tpl = str_replace('<table','<table class="table table-bordered"', $tpl);
 
         foreach($tpl_data as $key=>$value)
         {
             $temp_html = '';
             
-            $value['value'] = isset($form_data[$value['name']]) ? $form_data[$value['name']] : $value['value'];//Í¨ÓÃ
+            $value['value'] = isset($form_data[$value['name']]) ? $form_data[$value['name']] : $value['value'];//é€šç”¨
             
             switch($value['leipiplugins'])
             {
@@ -361,10 +361,10 @@ class Formdesign
                     foreach($value['options'] as $item)
                     {
                         $checked = '';
-                        if(isset($form_data[$value['name']]))//Ô­ Ä¬ÈÏÖµ
+                        if(isset($form_data[$value['name']]))//åŸ é»˜è®¤å€¼
                         {
                            $checked =  $form_data[$value['name']] == $item['value'] ? 'checked="checked"' : '';
-                        }else if(isset($item['checked']))//ÅĞ¶Ïisset ¾Í¿ÉÒÔ,ÔÚieÖĞ£¬checkedµÄÖµÊÇ¿ÕµÄ
+                        }else if(isset($item['checked']))//åˆ¤æ–­isset å°±å¯ä»¥,åœ¨ieä¸­ï¼Œcheckedçš„å€¼æ˜¯ç©ºçš„
                         {
                             $checked = 'checked="checked"';
                         }
@@ -377,10 +377,10 @@ class Formdesign
                     foreach($value['options'] as $item)
                     {
                         $checked = '';
-                        if(isset($form_data[$item['name']]))//Ô­ Ä¬ÈÏÖµ
+                        if(isset($form_data[$item['name']]))//åŸ é»˜è®¤å€¼
                         {
                            $checked =  $form_data[$item['name']] >0 ? 'checked="checked"' : '';
-                        }else if(isset($item['checked']))//ÅĞ¶Ïisset ¾Í¿ÉÒÔ,ÔÚieÖĞ£¬checkedµÄÖµÊÇ¿ÕµÄ
+                        }else if(isset($item['checked']))//åˆ¤æ–­isset å°±å¯ä»¥,åœ¨ieä¸­ï¼Œcheckedçš„å€¼æ˜¯ç©ºçš„
                         {
                             $checked = 'checked="checked"';
                         }
@@ -390,7 +390,7 @@ class Formdesign
                     $value['name'] = $value['parse_name'];
                     break;
                case 'select':
-                    //ÉèÖÃ¹ıÄ¬ÈÏÖµ  Çå¿ÕËü  
+                    //è®¾ç½®è¿‡é»˜è®¤å€¼  æ¸…ç©ºå®ƒ  
                     if(isset($form_data[$value['name']]))
                     {
                         if(isset($value['selected']))
@@ -400,7 +400,7 @@ class Formdesign
                         $selected = '';
                         if($form_data[$value['name']]==$value['value'])
                             $selected = 'selected="selected"';
-                        //ÖØĞÂ¶¨ÒåÄ¬ÈÏÖµ 
+                        //é‡æ–°å®šä¹‰é»˜è®¤å€¼ 
                         $value['content'] = str_replace('value="'.$value['value'].'"','value="'.$value['value'].'" '.$selected,$value['content']);
                     }
                     $temp_html = $value['content']; 
@@ -413,7 +413,7 @@ class Formdesign
                     {
                         $value['value'] = floatval($value['value']);
                         $value['value'] = $value['value']>0 ? $value['value'] : floatval($value['orgvalue']);
-                        $temp_html ='½ø¶È <input type="text" style="width:40px" name="'.$value['name'].'" value="'.$value['value'].'"/> %'; 
+                        $temp_html ='è¿›åº¦ <input type="text" style="width:40px" name="'.$value['name'].'" value="'.$value['value'].'"/> %'; 
                     }else if($controller['action']=='view')
                     {
                         $temp_html = '<div class="progress progress-striped"><div class="bar '.$value['orgsigntype'].'" style="width: '.$value['value'].'%;"></div></div>';
@@ -423,28 +423,28 @@ class Formdesign
                     }
                    
                     break;
-               case 'qrcode'://Î´´¦ÀíÉú³É¶şÎ¬Âë
+               case 'qrcode'://æœªå¤„ç†ç”ŸæˆäºŒç»´ç 
                
                     $orgtype = '';
                     if($value['orgtype']=='text')
                     {
-                        $orgtype = 'ÎÄ±¾';
+                        $orgtype = 'æ–‡æœ¬';
                     }else if($value['orgtype']=='url')
                     {
-                        $orgtype = '³¬Á´½Ó';
+                        $orgtype = 'è¶…é“¾æ¥';
                     }else if($value['orgtype']=='tel')
                     {
-                        $orgtype = 'µç»°';
+                        $orgtype = 'ç”µè¯';
                     }
                     if($value['value'])
                         $qrcode_value = unserialize($value['value']);
                         //print_R($qrcode_value);exit;  //array(value,qrcode_url)
                     if($controller['action']=='edit')
                     {
-                        $temp_html = $orgtype.'¶şÎ¬Âë <input type="text" name="'.$value['name'].'" value="'.$qrcode_value['value'].'"/>'; 
+                        $temp_html = $orgtype.'äºŒç»´ç  <input type="text" name="'.$value['name'].'" value="'.$qrcode_value['value'].'"/>'; 
                     }else if($controller['action']=='view')
                     {
-                        //¿ÉÒÔ²ÉÓÃ  http://qrcode.leipi.org/ 
+                        //å¯ä»¥é‡‡ç”¨  http://qrcode.leipi.org/ 
 
                         $style = '';
                         if($value['orgwidth']>0)
@@ -476,7 +476,7 @@ class Formdesign
 
                 case 'listctrl':
                         
-                        //±à¼­Êı¾İ
+                        //ç¼–è¾‘æ•°æ®
                         $def_value[$key] = !empty($value['value']) ? unserialize($value['value']) : '';
 
                         $orgtitle = rtrim($value['orgtitle'],'`');
@@ -492,7 +492,7 @@ class Formdesign
                         $orgcolvalue_arr = explode('`', $orgcolvalue);
 
 
-//²é¿´
+//æŸ¥çœ‹
 if($controller['action'] =='view')
 {
     
@@ -508,9 +508,9 @@ if($controller['action'] =='view')
                            $tb_td.='<td></td>';
 
                            //tfooter
-                           if($orgsum_arr[$k]>0)//ĞèÒªºÏ¼Æ
+                           if($orgsum_arr[$k]>0)//éœ€è¦åˆè®¡
                            {
-                                $tf_td .='<td>ºÏ¼Æ£º0 '.$orgunit_arr[$k].'</td>';
+                                $tf_td .='<td>åˆè®¡ï¼š0 '.$orgunit_arr[$k].'</td>';
                            }else
                            {
                                 $tf_td .='<td></td>';
@@ -519,7 +519,7 @@ if($controller['action'] =='view')
                        }
 
 
-                       //ÓĞ±à¼­ÖµÊ±£¬»¹Ô­table
+                       //æœ‰ç¼–è¾‘å€¼æ—¶ï¼Œè¿˜åŸtable
                        $tb_tf_tr = '';//tbody  tfooter
                        if($def_value[$key])
                        {
@@ -533,9 +533,9 @@ if($controller['action'] =='view')
                                        $tb_td.='<td>'.$dval[$k].' '.$orgunit_arr[$k].'</td>';
 
                                        //tfooter
-                                       if($orgsum_arr[$k]>0)//ĞèÒªºÏ¼Æ
+                                       if($orgsum_arr[$k]>0)//éœ€è¦åˆè®¡
                                        {
-                                            $tf_td .='<td>ºÏ¼Æ£º'.(int)$def_value[$key]['sum'][$k].' '.$orgunit_arr[$k].'</td>';
+                                            $tf_td .='<td>åˆè®¡ï¼š'.(int)$def_value[$key]['sum'][$k].' '.$orgunit_arr[$k].'</td>';
                                        }else
                                        {
                                             $tf_td .='<td></td>';
@@ -554,11 +554,11 @@ if($controller['action'] =='view')
                                           
                                         </thead>';
 
-                            if($def_value[$key])//ÓĞ±à¼­ÖµÊ±£¬»¹Ô­table
+                            if($def_value[$key])//æœ‰ç¼–è¾‘å€¼æ—¶ï¼Œè¿˜åŸtable
                             {
                                 $temp_html .= '<tbody>'.$tb_tf_tr.'</tbody>';
 
-                            }else//¸Õ·¢ÆğµÄ¹«ÎÄ£¬Ã»±à¼­ÖµÊ±£¬Ä¬ÈÏÒ»ĞĞ
+                            }else//åˆšå‘èµ·çš„å…¬æ–‡ï¼Œæ²¡ç¼–è¾‘å€¼æ—¶ï¼Œé»˜è®¤ä¸€è¡Œ
                             {
                                     $temp_html .='<tbody>
                                           <tr class="template">'.$tb_td.'
@@ -577,7 +577,7 @@ if($controller['action'] =='view')
                         $temp_html .='</table>';
 
     
-}else//¿ÉĞ´
+}else//å¯å†™
 {
 
 
@@ -587,18 +587,18 @@ if($controller['action'] =='view')
                             {
                                 var sTbid = dname+"_table";
                                 $("#"+sTbid+" .template")  
-                                    //Á¬Í¬ÊÂ¼şÒ»Æğ¸´ÖÆ    
+                                    //è¿åŒäº‹ä»¶ä¸€èµ·å¤åˆ¶    
                                     .clone(true)    
-                                    //È¥³ıÄ£°å±ê¼Ç    
+                                    //å»é™¤æ¨¡æ¿æ ‡è®°    
                                     .removeClass("template")  
-                                    //ĞŞ¸ÄÄÚ²¿ÔªËØ 
+                                    //ä¿®æ”¹å†…éƒ¨å…ƒç´  
                                     .find(".delrow").show().end()
                                     .find("input").val("").end()
                                     .find("textarea").val("").end()
-                                    //²åÈë±í¸ñ    
+                                    //æ’å…¥è¡¨æ ¼    
                                    .appendTo($("#"+sTbid));
                             }
-                            //Í³¼Æ
+                            //ç»Ÿè®¡
                             function sum_total(dname,e){
                                 
                                 var tsum = 0;
@@ -612,7 +612,7 @@ if($controller['action'] =='view')
 
                             }
 
-                            /*É¾³ıtr*/
+                            /*åˆ é™¤tr*/
                             function fnDeleteRow(obj)
                             {
                                 var sTbid = "'.$value['name'].'_table";
@@ -636,12 +636,12 @@ if($controller['action'] =='view')
                        foreach ($orgtitle_arr as $k => $val) {
                             $td_sum++;
 
-                            //Ç°ÆÚ
+                            //å‰æœŸ
                             $sum_total_html = '';
-                            if($orgsum_arr[$k]>0)//ĞèÒªºÏ¼Æ
+                            if($orgsum_arr[$k]>0)//éœ€è¦åˆè®¡
                             {
                                 $is_sum ++;
-                                $orgcoltype_arr[$k]=='int';//±ØĞëÊıÖµ
+                                $orgcoltype_arr[$k]=='int';//å¿…é¡»æ•°å€¼
                                 $sum_total_html = 'onblur="sum_total(\''.$value['name'].'['.$k.']\')"';
                             }
 
@@ -657,14 +657,14 @@ if($controller['action'] =='view')
                            }else if($orgcoltype_arr[$k]=='int')
                            {
                                 $tb_td.='<td><input class="input-medium" '.$sum_total_html.' type="text" name="'.$value['name'].'['.$k.'][]" value="'.$orgcolvalue_arr[$k].'"> '.$orgunit_arr[$k].'</td>';
-                           }else if($orgcoltype_arr[$k]=='calc')//¹«Ê½£¬ÔİÎ´´¦Àí
+                           }else if($orgcoltype_arr[$k]=='calc')//å…¬å¼ï¼Œæš‚æœªå¤„ç†
                            {
                                 $tb_td.='<td><input class="input-medium" type="text" name="'.$value['name'].'['.$k.'][]" value="'.$orgcolvalue_arr[$k].'"> '.$orgunit_arr[$k].'</td>';
                            }
                            //tfooter
-                           if($orgsum_arr[$k]>0)//ĞèÒªºÏ¼Æ
+                           if($orgsum_arr[$k]>0)//éœ€è¦åˆè®¡
                            {
-                                $tf_td .='<td>ºÏ¼Æ£º<input type="text" class="input-small" name="'.$value['name'].'['.$k.'][total]" onblur="sum_total(\''.$value['name'].'['.$k.'][]\')" value="'.$orgcolvalue_arr[$k].'"> '.$orgunit_arr[$k].'</td>';
+                                $tf_td .='<td>åˆè®¡ï¼š<input type="text" class="input-small" name="'.$value['name'].'['.$k.'][total]" onblur="sum_total(\''.$value['name'].'['.$k.'][]\')" value="'.$orgcolvalue_arr[$k].'"> '.$orgunit_arr[$k].'</td>';
                            }else
                            {
                                 $tf_td .='<td></td>';
@@ -673,7 +673,7 @@ if($controller['action'] =='view')
                        }
 
 
-                       //ÓĞ±à¼­ÖµÊ±£¬»¹Ô­table
+                       //æœ‰ç¼–è¾‘å€¼æ—¶ï¼Œè¿˜åŸtable
                        $tb_tf_tr = '';//tbody  tfooter
                        if(!empty($def_value[$key]['list']))
                        {
@@ -684,12 +684,12 @@ if($controller['action'] =='view')
                                 foreach ($orgtitle_arr as $k => $val) {
                                     $is_sum++;
 
-                                    //Ç°ÆÚ
+                                    //å‰æœŸ
                                     $sum_total_html = '';
-                                    if($orgsum_arr[$k]>0)//ĞèÒªºÏ¼Æ
+                                    if($orgsum_arr[$k]>0)//éœ€è¦åˆè®¡
                                     {
                                         $is_sum ++;
-                                        $orgcoltype_arr[$k]=='int';//±ØĞëÊıÖµ
+                                        $orgcoltype_arr[$k]=='int';//å¿…é¡»æ•°å€¼
                                         $sum_total_html = 'onblur="sum_total(\''.$value['name'].'['.$k.']\')"';
                                     }
 
@@ -703,27 +703,27 @@ if($controller['action'] =='view')
                                        }else if($orgcoltype_arr[$k]=='int')
                                        {
                                             $tb_td.='<td><input class="input-medium" '.$sum_total_html.' type="text" name="'.$value['name'].'['.$k.'][]" value="'.$dval[$k].'"> '.$orgunit_arr[$k].'</td>';
-                                       }else if($orgcoltype_arr[$k]=='calc')//¹«Ê½£¬ÔİÎ´´¦Àí
+                                       }else if($orgcoltype_arr[$k]=='calc')//å…¬å¼ï¼Œæš‚æœªå¤„ç†
                                        {
                                             $tb_td.='<td><input class="input-medium" type="text" name="'.$value['name'].'['.$k.'][]" value="'.$dval[$k].'"> '.$orgunit_arr[$k].'</td>';
                                        }
                                        //tfooter
-                                       if($orgsum_arr[$k]>0)//ĞèÒªºÏ¼Æ
+                                       if($orgsum_arr[$k]>0)//éœ€è¦åˆè®¡
                                        {
-                                            $tf_td .='<td>ºÏ¼Æ£º<input type="text" class="input-small" name="'.$value['name'].'['.$k.'][total]" onblur="sum_total(\''.$value['name'].'['.$k.'][]\')" value="'.(int)$def_value[$key]['sum'][$k].'"> '.$orgunit_arr[$k].'</td>';
+                                            $tf_td .='<td>åˆè®¡ï¼š<input type="text" class="input-small" name="'.$value['name'].'['.$k.'][total]" onblur="sum_total(\''.$value['name'].'['.$k.'][]\')" value="'.(int)$def_value[$key]['sum'][$k].'"> '.$orgunit_arr[$k].'</td>';
                                        }else
                                        {
                                             $tf_td .='<td></td>';
                                        }
                                 }
                                 $delrow_hide = '';
-                                $one_tr = '';//×÷ÎªÄ£°å
+                                $one_tr = '';//ä½œä¸ºæ¨¡æ¿
                                 if($dk==0)
                                 {
                                     $delrow_hide = 'hide';
                                     $one_tr = 'class="template"';
                                 }
-                                $tb_tf_tr .='<tr '.$one_tr .'>'.$tb_td.'<td><a href="javascript:void(0);" onclick="fnDeleteRow(this)" class="delrow '.$delrow_hide.'">É¾³ı</a></td></tr>';
+                                $tb_tf_tr .='<tr '.$one_tr .'>'.$tb_td.'<td><a href="javascript:void(0);" onclick="fnDeleteRow(this)" class="delrow '.$delrow_hide.'">åˆ é™¤</a></td></tr>';
                             }
                        }
 
@@ -732,22 +732,22 @@ if($controller['action'] =='view')
                                         <tr><th colspan="'.($td_sum+1).'">
                                         '.$value['title'].'
                                             <span class="pull-right">
-                                                <button class="btn btn-small btn-success" type="button" onclick="tbAddRow(\''.$value['name'].'\')">Ìí¼ÓÒ»ĞĞ</button>
+                                                <button class="btn btn-small btn-success" type="button" onclick="tbAddRow(\''.$value['name'].'\')">æ·»åŠ ä¸€è¡Œ</button>
                                             </span>
                                         </th></tr>
                                         <tr>
-                                          <tr>'.$th_th.'<th>²Ù×÷</th></tr>
+                                          <tr>'.$th_th.'<th>æ“ä½œ</th></tr>
                                         </thead>';
 
-                            if(!empty($def_value[$key]['list']))//ÓĞ±à¼­ÖµÊ±£¬»¹Ô­table
+                            if(!empty($def_value[$key]['list']))//æœ‰ç¼–è¾‘å€¼æ—¶ï¼Œè¿˜åŸtable
                             {
                                 $temp_html .= '<tbody><tr></tr>'.$tb_tf_tr.'</tbody>';
 
-                            }else//¸Õ·¢ÆğµÄ¹«ÎÄ£¬Ã»±à¼­ÖµÊ±£¬Ä¬ÈÏÒ»ĞĞ
+                            }else//åˆšå‘èµ·çš„å…¬æ–‡ï¼Œæ²¡ç¼–è¾‘å€¼æ—¶ï¼Œé»˜è®¤ä¸€è¡Œ
                             {
                                     $temp_html .='
                                           <tr class="template">'.$tb_td.'
-                                            <td><a href="javascript:void(0);" onclick="fnDeleteRow(this)" class="delrow hide">É¾³ı</a></td>
+                                            <td><a href="javascript:void(0);" onclick="fnDeleteRow(this)" class="delrow hide">åˆ é™¤</a></td>
                                           </tr>
                                         </tbody>';
                                     
@@ -764,7 +764,7 @@ if($controller['action'] =='view')
                         $temp_html .='</table>';
                        
      
-}//¿ÉĞ´
+}//å¯å†™
 
 
 
@@ -797,28 +797,26 @@ if($controller['action'] =='view')
             case 'sys_date':
                 $date_format = 'Y-m-d';break;
             case 'sys_date_cn':
-                $date_format = 'YÄênÔÂjÈÕ';break;
+                $date_format = 'Yå¹´næœˆjæ—¥';break;
             case 'sys_date_cn_short3':
-                $date_format = 'YÄê';break;
+                $date_format = 'Yå¹´';break;
             case 'sys_date_cn_short4':
                 $date_format = 'Y';break;
             case 'sys_date_cn_short1':
-                $date_format = 'YÄêmÔÂ';break;
+                $date_format = 'Yå¹´mæœˆ';break;
             case 'sys_date_cn_short2':
-                $date_format = 'mÔÂdÈÕ';break;
+                $date_format = 'mæœˆdæ—¥';break;
             case 'sys_time':
                 $date_format = 'H:i:s';break;
-            case 'sys_date':
-                $date_format = 'Y-m-d';break;
             case 'sys_datetime':
                 $date_format = 'Y-m-d H:i:s';break;
-            case 'sys_week'://ÖÜ
+            case 'sys_week'://å‘¨
                 if(!$def_value)
                 {
                     $dateArray  =   getdate($date);
                     $wday = $dateArray["wday"];
-                    $week = array("ÈÕ","Ò»","¶ş","Èı","ËÄ","Îå","Áù");
-                    $def_value = 'ĞÇÆÚ'.$week[$wday];
+                    $week = array("æ—¥","ä¸€","äºŒ","ä¸‰","å››","äº”","å…­");
+                    $def_value = 'æ˜ŸæœŸ'.$week[$wday];
                 }
                 $tpl = str_replace('{macros}',$def_value,$tpl);
                 break;
@@ -832,21 +830,16 @@ if($controller['action'] =='view')
                     $def_value = $controller['user']['real_name'];
                 $tpl = str_replace('{macros}',$def_value,$tpl);
                 break;
-            case 'sys_realname':
-                if(!$def_value)
-                    $def_value = $controller['user']['dept'];
-                $tpl = str_replace('{macros}',$def_value,$tpl);
-                break;
             default:
-                $tpl = str_replace('{macros}','Î´ÍêÉÆµÄºê¿Ø¼ş',$tpl);
+                $tpl = str_replace('{macros}','æœªå®Œå–„çš„å®æ§ä»¶',$tpl);
                 break;
         }
-        //Ê±¼ä
+        //æ—¶é—´
         if($date_format)
         {
-            $def_value = str_replace('Äê','-',$def_value);
-            $def_value = str_replace('ÔÂ','-',$def_value);
-            $def_value = str_replace('ÈÕ','',$def_value);
+            $def_value = str_replace('å¹´','-',$def_value);
+            $def_value = str_replace('æœˆ','-',$def_value);
+            $def_value = str_replace('æ—¥','',$def_value);
             $def_value = trim($def_value,'-');
 
             $timestamp = 0;
@@ -866,7 +859,7 @@ if($controller['action'] =='view')
             
             if(!$timestamp)
             {
-                $tpl = str_replace('{macros}',$def_value,$tpl);//Ê±¼ä×ª»»Ê§°ÜÊ±
+                $tpl = str_replace('{macros}',$def_value,$tpl);//æ—¶é—´è½¬æ¢å¤±è´¥æ—¶
             }else
             {
                 $tpl = str_replace('{macros}',date($date_format,$timestamp),$tpl);
@@ -880,7 +873,7 @@ if($controller['action'] =='view')
     
     
     
-    //³é³ö±íµ¥Ìá½»ºó ¿Ø¼şµÄÖµ
+    //æŠ½å‡ºè¡¨å•æäº¤å æ§ä»¶çš„å€¼
 
     public function unparse_data($form,$post_data,$controller=array())
     {
@@ -891,28 +884,28 @@ if($controller['action'] =='view')
         {
             switch($value['leipiplugins'])
             {
-                //²»Í¬µÄÀàĞÍ£¬¿ÉÒÔ¼ÓÈë²»Í¬µÄ´¦Àí·½Ê½
+                //ä¸åŒçš„ç±»å‹ï¼Œå¯ä»¥åŠ å…¥ä¸åŒçš„å¤„ç†æ–¹å¼
 
-                case 'checkboxs'://°üº¬¶à¸ö name
+                case 'checkboxs'://åŒ…å«å¤šä¸ª name
                     foreach($value['options'] as $val)
                     {
                         $return_data[$val['name']] = isset($post_data[$val['name']]) ? 1 : 0;
                         //$return_data[$val['name']]= $post_data[$val['name']] ? trim($post_data[$val['name']]) : '';
                     }
                     break;
-                case 'qrcode'://Éú³É¶şÎ¬Âë
-                    //¿ÉÒÔ²ÉÓÃ  http://qrcode.leipi.org/ 
+                case 'qrcode'://ç”ŸæˆäºŒç»´ç 
+                    //å¯ä»¥é‡‡ç”¨  http://qrcode.leipi.org/ 
                     $qrcode_url = '';
                     
                     $qrcode = $post_data[$value['name']] ? trim($post_data[$value['name']]) : '';
                     if($qrcode)
                     {
-                        import('@.Org.QRcode');//import ÎªThinkphpÄÚÖÃ£¬Ê¹ÓÃÆäËü¿ò¼ÜÇë»»³É£º include_once     
+                        import('@.Org.QRcode');//import ä¸ºThinkphpå†…ç½®ï¼Œä½¿ç”¨å…¶å®ƒæ¡†æ¶è¯·æ¢æˆï¼š include_once     
                         $qrcode_file = 'Uploads/'.md5($qrcode).'.png';
                         $qrcode_url = '/'.$qrcode_file;
                         $qrcode_path = SITE_DIR.$qrcode_file;
                         
-                        $size = round($value['orgwidth']/25);//QRcode size¼ÆËã
+                        $size = round($value['orgwidth']/25);//QRcode sizeè®¡ç®—
                         if($size<=0) $size =1;
                         if($value['orgtype']=='text')
                         {
@@ -943,7 +936,7 @@ if($controller['action'] =='view')
                     }
 
                     $temparr = array();
-                    //´¦ÀíÓÃ»§ÊäÈë 
+                    //å¤„ç†ç”¨æˆ·è¾“å…¥ 
 
                    
                     $orgcoltype = trim($value['orgcoltype'],'`');
@@ -952,7 +945,7 @@ if($controller['action'] =='view')
                     $orgcoltype_arr = explode('`', $orgcoltype);
                     $orgsum_arr = explode('`', $orgsum);
 
-                    $temparr_sum = array();//ºÏ¼Æ
+                    $temparr_sum = array();//åˆè®¡
                     foreach ($post_data[$value['name']][0] as $k => $val)
                     {
                         if($val=='') continue;
@@ -967,7 +960,7 @@ if($controller['action'] =='view')
                                $temparr[$k][$k2]= $post_data[$value['name']][$k2][$k];
                            }
 
-                           //ºÏ¼Æ
+                           //åˆè®¡
                             if($orgsum_arr[$k2]>0)
                             {
                                 $temparr_sum[$k2] = $post_data[$value['name']][$k2]['total'];
@@ -977,8 +970,8 @@ if($controller['action'] =='view')
                     }
 
                     $return_data[$value['name']] = serialize(array(
-                        'list'=>$temparr,   //ĞĞÊı¾İ
-                        'sum'=>$temparr_sum,//ºÏ¼Æ
+                        'list'=>$temparr,   //è¡Œæ•°æ®
+                        'sum'=>$temparr_sum,//åˆè®¡
                     ));
                     break; 
                 case 'text':

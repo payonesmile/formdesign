@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>ÎÄ±¾¿ò</title>
+    <title>æ–‡æœ¬æ¡†</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
     <meta name="generator" content="www.leipi.org" />
@@ -35,38 +35,38 @@ function createElement(type, name)
 <div class="content">
     <table class="table table-bordered table-striped table-hover">
      <tr>
-        <th><span>¿Ø¼şÃû³Æ</span><span class="label label-important">*</span></th>
-        <th><span>Ä¬ÈÏÖµ</span> </th>
+        <th><span>æ§ä»¶åç§°</span><span class="label label-important">*</span></th>
+        <th><span>é»˜è®¤å€¼</span> </th>
     </tr>
     <tr>
-        <td><input type="text" id="orgname" placeholder="±ØÌîÏî"></td>
-        <td><input type="text" id="orgvalue" placeholder="ÎŞÔò²»Ìî"></td>
+        <td><input type="text" id="orgname" placeholder="å¿…å¡«é¡¹"></td>
+        <td><input type="text" id="orgvalue" placeholder="æ— åˆ™ä¸å¡«"></td>
     </tr>
     <tr>
-        <th><span>Êı¾İÀàĞÍ</span> </th>
-        <th><span>¶ÔÆë·½Ê½</span> </th>
+        <th><span>æ•°æ®ç±»å‹</span> </th>
+        <th><span>å¯¹é½æ–¹å¼</span> </th>
     </tr>
     <tr>
         <td>
              <select id="orgtype">
-                <option value="text">ÆÕÍ¨ÎÄ±¾</option>
-                <option value="email">ÓÊÏäµØÖ·</option>
-                <option value="int">ÕûÊı</option>
-                <option value="float">Ğ¡Êı</option>
-                <option value="idcard">Éí·İÖ¤ºÅÂë</option>
+                <option value="text">æ™®é€šæ–‡æœ¬</option>
+                <option value="email">é‚®ç®±åœ°å€</option>
+                <option value="int">æ•´æ•°</option>
+                <option value="float">å°æ•°</option>
+                <option value="idcard">èº«ä»½è¯å·ç </option>
             </select>   
         </td>
         <td>
             <select id="orgalign">
-                <option value="left" >×ó¶ÔÆë</option>
-                <option value="center">¾ÓÖĞ¶ÔÆë</option>
-                <option value="right">ÓÒ¶ÔÆë</option>
+                <option value="left" >å·¦å¯¹é½</option>
+                <option value="center">å±…ä¸­å¯¹é½</option>
+                <option value="right">å³å¯¹é½</option>
             </select>
         </td>
     </tr>
     <tr>
-        <th><span>&nbsp;&nbsp;&nbsp;&nbsp;³¤&nbsp;&nbsp;X&nbsp;&nbsp;¿í&nbsp;&nbsp;&nbsp;&&nbsp;&nbsp;&nbsp;×ÖÌå´óĞ¡</span> </th>
-        <th><span>¿É¼ûĞÔ</span> </th>
+        <th><span>&nbsp;&nbsp;&nbsp;&nbsp;é•¿&nbsp;&nbsp;X&nbsp;&nbsp;å®½&nbsp;&nbsp;&nbsp;&&nbsp;&nbsp;&nbsp;å­—ä½“å¤§å°</span> </th>
+        <th><span>å¯è§æ€§</span> </th>
     </tr>
     <tr>
         <td>
@@ -78,7 +78,7 @@ function createElement(type, name)
 
         </td>
         <td>
-            <label class="checkbox inline"><input id="orghide" type="checkbox"/> Òş²Ø </label>
+            <label class="checkbox inline"><input id="orghide" type="checkbox"/> éšè— </label>
         </td>
     </tr>
 
@@ -89,7 +89,10 @@ var oNode = null,thePlugins = 'text';
 window.onload = function() {
     if( UE.plugins[thePlugins].editdom ){
         oNode = UE.plugins[thePlugins].editdom;
-		var gValue = oNode.getAttribute('value').replace(/&quot;/g,"\""),gTitle=oNode.getAttribute('title').replace(/&quot;/g,"\""),gHidden=oNode.getAttribute('orghide'),gFontSize=oNode.getAttribute('orgfontsize'),gAlign=oNode.getAttribute('orgalign'),gWidth=oNode.getAttribute('orgwidth'),gHeight=oNode.getAttribute('orgheight'),gType=oNode.getAttribute('orgtype');
+		var gValue = '';
+		if(oNode.getAttribute('value'))
+			gValue = oNode.getAttribute('value').replace(/&quot;/g,"\"");
+		var gTitle=oNode.getAttribute('title').replace(/&quot;/g,"\""),gHidden=oNode.getAttribute('orghide'),gFontSize=oNode.getAttribute('orgfontsize'),gAlign=oNode.getAttribute('orgalign'),gWidth=oNode.getAttribute('orgwidth'),gHeight=oNode.getAttribute('orgheight'),gType=oNode.getAttribute('orgtype');
 		gValue = gValue==null ? '' : gValue;
         gTitle = gTitle==null ? '' : gTitle;
 		$G('orgvalue').value = gValue;
@@ -112,7 +115,7 @@ dialog.oncancel = function () {
 };
 dialog.onok = function (){
     if($G('orgname').value==''){
-        alert('ÇëÊäÈë¿Ø¼şÃû³Æ');
+        alert('è¯·è¾“å…¥æ§ä»¶åç§°');
         return false;
     }
     var gValue=$G('orgvalue').value.replace(/\"/g,"&quot;"),gTitle=$G('orgname').value.replace(/\"/g,"&quot;"),gFontSize=$G('orgfontsize').value,gAlign=$G('orgalign').value,gWidth=$G('orgwidth').value,gHeight=$G('orgheight').value,gType=$G('orgtype').value;
@@ -160,7 +163,7 @@ dialog.onok = function (){
             try {
                 editor.execCommand('error');
             } catch ( e ) {
-                alert('¿Ø¼şÒì³££¬Çëµ½ [À×ÅüÍø] ·´À¡»òÑ°Çó°ïÖú£¡');
+                alert('æ§ä»¶å¼‚å¸¸ï¼Œè¯·åˆ° [é›·åŠˆç½‘] åé¦ˆæˆ–å¯»æ±‚å¸®åŠ©ï¼');
             }
             return false;
         }

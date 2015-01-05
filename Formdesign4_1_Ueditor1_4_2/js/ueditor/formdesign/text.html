@@ -89,7 +89,10 @@ var oNode = null,thePlugins = 'text';
 window.onload = function() {
     if( UE.plugins[thePlugins].editdom ){
         oNode = UE.plugins[thePlugins].editdom;
-		var gValue = oNode.getAttribute('value').replace(/&quot;/g,"\""),gTitle=oNode.getAttribute('title').replace(/&quot;/g,"\""),gHidden=oNode.getAttribute('orghide'),gFontSize=oNode.getAttribute('orgfontsize'),gAlign=oNode.getAttribute('orgalign'),gWidth=oNode.getAttribute('orgwidth'),gHeight=oNode.getAttribute('orgheight'),gType=oNode.getAttribute('orgtype');
+		var gValue = '';
+		if(oNode.getAttribute('value'))
+			gValue = oNode.getAttribute('value').replace(/&quot;/g,"\"");
+		var gTitle=oNode.getAttribute('title').replace(/&quot;/g,"\""),gHidden=oNode.getAttribute('orghide'),gFontSize=oNode.getAttribute('orgfontsize'),gAlign=oNode.getAttribute('orgalign'),gWidth=oNode.getAttribute('orgwidth'),gHeight=oNode.getAttribute('orgheight'),gType=oNode.getAttribute('orgtype');
 		gValue = gValue==null ? '' : gValue;
         gTitle = gTitle==null ? '' : gTitle;
 		$G('orgvalue').value = gValue;
