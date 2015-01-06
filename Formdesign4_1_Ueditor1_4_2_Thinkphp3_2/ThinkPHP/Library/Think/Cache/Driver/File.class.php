@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006-2013 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006-2014 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -51,7 +51,7 @@ class File extends Cache {
      * @return string
      */
     private function filename($name) {
-        $name	=	md5($name);
+        $name	=	md5(C('DATA_CACHE_KEY').$name);
         if(C('DATA_CACHE_SUBDIR')) {
             // 使用子目录
             $dir   ='';

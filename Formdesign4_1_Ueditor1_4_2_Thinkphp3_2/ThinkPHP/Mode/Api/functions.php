@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006-2013 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006-2014 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -12,6 +12,72 @@
 /**
  * Think API模式函数库
  */
+
+/**
+ * 获取和设置配置参数 支持批量定义
+ * @param string|array $name 配置变量
+ * @param mixed $value 配置值
+ * @param mixed $default 默认值
+ * @return mixed
+ */
+function C($name=null, $value=null,$default=null) {
+    static $_config = array();
+    // 无参数时获取所有
+    if (empty($name)) {
+        return $_config;
+    }
+    // 优先执行设置获取或赋值
+    if (is_string($name)) {
+        if (!strpos($name, '.')) {
+            $name = strtolower($name);
+            if (is_null($value))
+                return isset($_config[$name]) ? $_config[$name] : $default;
+            $_config[$name] = $value;
+            return;
+        }
+        // 二维数组设置和获取支持
+        $name = explode('.', $name);
+        $name[0]   =  strtolower($name[0]);
+        if (is_null($value))
+            return isset($_config[$name[0]][$name[1]]) ? $_config[$name[0]][$name[1]] : $default;
+        $_config[$name[0]][$name[1]] = $value;
+        return;
+    }
+    // 批量设置
+    if (is_array($name)){
+        $_config = array_merge($_config, array_change_key_case($name));
+        return;
+    }
+    return null; // 避免非法参数
+}
+
+/**
+ * 加载配置文件 支持格式转换 仅支持一级配置
+ * @param string $file 配置文件名
+ * @param string $parse 配置解析方法 有些格式需要用户自己解析
+ * @return void
+ */
+function load_config($file,$parse=CONF_PARSE){
+    $ext  = pathinfo($file,PATHINFO_EXTENSION);
+    switch($ext){
+        case 'php':
+            return include $file;
+        case 'ini':
+            return parse_ini_file($file);
+        case 'yaml':
+            return yaml_parse_file($file);
+        case 'xml': 
+            return (array)simplexml_load_file($file);
+        case 'json':
+            return json_decode(file_get_contents($file), true);
+        default:
+            if(function_exists($parse)){
+                return $parse($file);
+            }else{
+                E(L('_NOT_SUPPORT_').':'.$ext);
+            }
+    }
+}
 
 /**
  * 抛出异常处理
@@ -129,9 +195,13 @@ function compile($filename) {
  * @param string $name 变量的名称 支持指定类型
  * @param mixed $default 不存在的时候默认值
  * @param mixed $filter 参数过滤方法
+ * @param mixed $datas 要获取的额外数据源
  * @return mixed
  */
-function I($name,$default='',$filter=null) {
+function I($name,$default='',$filter=null,$datas=null) {
+	if(strpos($name,'/')){ // 指定修饰符
+		list($name,$type) 	=	explode('/',$name,2);
+	}
     if(strpos($name,'.')) { // 指定参数来源
         list($method,$name) =   explode('.',$name,2);
     }else{ // 默认为自动判断
@@ -153,44 +223,82 @@ function I($name,$default='',$filter=null) {
                     $input  =  $_GET;
             }
             break;
+        case 'path'    :   
+            $input  =   array();
+            if(!empty($_SERVER['PATH_INFO'])){
+                $depr   =   C('URL_PATHINFO_DEPR');
+                $input  =   explode($depr,trim($_SERVER['PATH_INFO'],$depr));            
+            }
+            break;
         case 'request' :   $input =& $_REQUEST;   break;
         case 'session' :   $input =& $_SESSION;   break;
         case 'cookie'  :   $input =& $_COOKIE;    break;
         case 'server'  :   $input =& $_SERVER;    break;
         case 'globals' :   $input =& $GLOBALS;    break;
+        case 'data'    :   $input =& $datas;      break;
         default:
             return NULL;
     }
-    if(empty($name)) { // 获取全部变量
+    if(''==$name) { // 获取全部变量
         $data       =   $input;
-        array_walk_recursive($data,'filter_exp');
         $filters    =   isset($filter)?$filter:C('DEFAULT_FILTER');
         if($filters) {
-            $filters    =   explode(',',$filters);
+            if(is_string($filters)){
+                $filters    =   explode(',',$filters);
+            }
             foreach($filters as $filter){
                 $data   =   array_map_recursive($filter,$data); // 参数过滤
             }
         }
     }elseif(isset($input[$name])) { // 取值操作
         $data       =   $input[$name];
-        is_array($data) && array_walk_recursive($data,'filter_exp');
         $filters    =   isset($filter)?$filter:C('DEFAULT_FILTER');
         if($filters) {
-            $filters    =   explode(',',$filters);
+            if(is_string($filters)){
+                $filters    =   explode(',',$filters);
+            }elseif(is_int($filters)){
+                $filters    =   array($filters);
+            }
+            
             foreach($filters as $filter){
                 if(function_exists($filter)) {
-                    $data   =   is_array($data)?array_map_recursive($filter,$data):$filter($data); // 参数过滤
+                    $data   =   is_array($data) ? array_map_recursive($filter,$data) : $filter($data); // 参数过滤
+                }elseif(0===strpos($filter,'/')){
+                	// 支持正则验证
+                	if(1 !== preg_match($filter,(string)$data)){
+                		return   isset($default) ? $default : NULL;
+                	}
                 }else{
-                    $data   =   filter_var($data,is_int($filter)?$filter:filter_id($filter));
+                    $data   =   filter_var($data,is_int($filter) ? $filter : filter_id($filter));
                     if(false === $data) {
-                        return   isset($default)?$default:NULL;
+                        return   isset($default) ? $default : NULL;
                     }
                 }
             }
         }
+        if(!empty($type)){
+        	switch(strtolower($type)){
+        		case 's':   // 字符串
+        			$data 	=	(string)$data;
+        			break;
+        		case 'a':	// 数组
+        			$data 	=	(array)$data;
+        			break;
+        		case 'd':	// 数字
+        			$data 	=	(int)$data;
+        			break;
+        		case 'f':	// 浮点
+        			$data 	=	(float)$data;
+        			break;
+        		case 'b':	// 布尔
+        			$data 	=	(boolean)$data;
+        			break;
+        	}
+        }
     }else{ // 变量默认值
         $data       =    isset($default)?$default:NULL;
     }
+    is_array($data) && array_walk_recursive($data,'think_filter');
     return $data;
 }
 
@@ -363,7 +471,7 @@ function vendor($class, $baseUrl = '', $ext='.php') {
 function D($name='',$layer='') {
     if(empty($name)) return new Think\Model;
     static $_model  =   array();
-    $layer          =   $layer? $layer : C('DEFAULT_M_LAYER');
+    $layer          =   $layer? : C('DEFAULT_M_LAYER');
     if(isset($_model[$name.$layer]))
         return $_model[$name.$layer];
     $class          =   parse_res_name($name,$layer);
@@ -440,8 +548,8 @@ function parse_res_name($name,$layer,$level=1){
  */
 function A($name,$layer='',$level='') {
     static $_action = array();
-    $layer  =   $layer? $layer : C('DEFAULT_C_LAYER');
-    $level  =   $level? $level : ($layer == C('DEFAULT_C_LAYER')?C('CONTROLLER_LEVEL'):1);
+    $layer  =   $layer? : C('DEFAULT_C_LAYER');
+    $level  =   $level? : ($layer == C('DEFAULT_C_LAYER')?C('CONTROLLER_LEVEL'):1);
     if(isset($_action[$name.$layer]))
         return $_action[$name.$layer];
     $class  =   parse_res_name($name,$layer,$level);
@@ -986,14 +1094,16 @@ function send_http_status($code) {
     }
 }
 
-// 过滤表单中的表达式
-function filter_exp(&$value){
-    if (in_array(strtolower($value),array('exp','or'))){
-        $value .= ' ';
-    }
-}
-
 // 不区分大小写的in_array实现
 function in_array_case($value,$array){
     return in_array(strtolower($value),array_map('strtolower',$array));
+}
+
+function think_filter(&$value){
+	// TODO 其他安全过滤
+
+	// 过滤查询特殊字符
+    if(preg_match('/^(EXP|NEQ|GT|EGT|LT|ELT|OR|XOR|LIKE|NOTLIKE|NOT BETWEEN|NOTBETWEEN|BETWEEN|NOTIN|NOT IN|IN)$/i',$value)){
+        $value .= ' ';
+    }
 }
