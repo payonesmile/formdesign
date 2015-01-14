@@ -547,11 +547,9 @@ if($controller['action'] =='view')
 
                         $temp_html .='<table id="'.$value['name'].'_table" cellspacing="0" class="table table-bordered table-condensed" style="'.$value['style'].'">';
                         $temp_html .='<thead>
-                                        <tr><th colspan="'.($td_sum).'">
-                                        '.$value['title'].'
-                                        </th></tr>
+                                        <tr><th colspan="'.($td_sum).'">'.$value['title'].'</th></tr>
+										<tr>'.$th_th.'</tr>
                                         <tr>
-                                          
                                         </thead>';
 
                             if($def_value[$key])//有编辑值时，还原table
